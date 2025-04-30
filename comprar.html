@@ -53,7 +53,10 @@
   
       if (token) {
         const payload = JSON.parse(atob(token.split('.')[1]));
-        document.getElementById("usuarioSaludo").textContent = `Hola ${payload.nombre}`;
+        const saludo = document.getElementById("usuarioSaludo");
+        if (saludo) {
+          saludo.textContent = `Hola ${payload.nombre}`;
+        }
       }
   
       try {
