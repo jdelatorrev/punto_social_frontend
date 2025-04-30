@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Punto Social | Comprar</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     body { background: #f4f4f4;}
     .grupo {
@@ -112,7 +113,12 @@
 
     if (!token) {
       localStorage.setItem("grupoPendiente", grupoId);
-      alert("Debes iniciar sesión para continuar con la compra.");
+      await Swal.fire({
+        icon: "warning",
+        title: "Inicia sesión",
+        text: "Debes iniciar sesión para continuar con la compra.",
+        confirmButtonText: "Iniciar sesión"
+      });
       window.location.href = "ingresa.html";
       return;
     }
@@ -133,18 +139,30 @@
         if (res.ok && data.url) {
           window.location.href = data.url; // 🔁 Redirige a PayPal
         } else {
-          alert(data.error || "❌ Error al crear orden de PayPal");
+          await Swal.fire({
+            icon: "error",
+            title: "Error al crear orden",
+            text: data.error || "No se pudo crear la orden en PayPal",
+          });
           console.warn("⚠️ Detalles de la respuesta:", data);
         }
       } catch (parseError) {
         console.error("❌ Error al parsear JSON:", parseError);
         console.log("Respuesta inesperada:", text);
-        alert("⚠️ El servidor respondió con datos inesperados:\n" + text);
+        await Swal.fire({
+          icon: "warning",
+          title: "Respuesta inesperada",
+          html: `<pre style="text-align:left">${text}</pre>`,
+        });
       }
 
     } catch (err) {
       console.error("❌ Error de red al crear orden:", err);
-      alert("Error de red al iniciar el pago.");
+      await Swal.fire({
+        icon: "error",
+        title: "Error de red",
+        text: "No se pudo contactar con el servidor. Intenta más tarde.",
+      });
     }
   }
 
