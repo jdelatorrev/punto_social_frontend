@@ -17,7 +17,7 @@
 <body>
   <div id="header-placeholder"></div>
   <script>
-    fetch("/frontend/header.html")
+    fetch("header.html")
       .then(res => res.text())
       .then(html => {
         document.getElementById("header-placeholder").innerHTML = html;
@@ -35,7 +35,7 @@
   <main>
     <section class="container-m">
       <div class="intro">
-          <img class="logo" src="/frontend/img/logo_intro.png" alt="logo">
+          <img class="logo" src="img/logo_intro.png" alt="logo">
           <div class="intro-quote">
               <p>Descubre cupones exclusivos y únete a una comunidad conectada que maximiza tu ahorro gozando de un mundo de descuentos.</p>
           </div>
