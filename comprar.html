@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Punto Social | Comprar</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body { background: #f4f4f4;}
+    .grupo {
+      background: white; padding: 15px; margin: 10px auto; max-width: 600px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-left: 6px solid red;
+    }
+    .grupo h2 { margin: 0 0 10px; }
+    .grupo p { margin: 5px 0; }
+    .boton-comprar {
+      display: inline-block; padding: 10px 20px; margin-top: 10px;
+      background: #28a745; color: white; border: none; cursor: pointer;
+      text-decoration: none; width: 15rem;
+    }
+    .boton-comprar:hover { background: #218838; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container-m head">
+        <a  href="/frontend/index.html"><img src="/frontend/img/logo.PNG"></a>
+        <p id="usuarioSaludo" class="saludo"></p>
+    </div>
+  </header>
+  <section class="container-m">
+    <h1>Compra de Cupones</h1>
+    <div id="contenedor-grupos"></div>
+    <div id="paypal-button-container-${grupo.id}"></div>
+  </section>
+  <script src="js/api.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const contenedorGrupos = document.getElementById('contenedor-grupos');
+      const token = localStorage.getItem("token");
+  
+      if (token) {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        document.getElementById("usuarioSaludo").textContent = `Hola ${payload.nombre}`;
+      }
+  
+      try {
+        const res = await fetch(`${API}/api/grupos`, {
+          cache: "no-store" // evita usar caché
+        });
+        if (!res.ok) throw new Error('Error al obtener los grupos');
+        const grupos = await res.json();
+        console.log("📦 Datos de grupos recibidos:", grupos);
+        grupos.forEach((g, i) => {
+          console.log(`Grupo ${i + 1}:`, g);
+        });
+        console.log("📦 Datos de grupos recibidos:", grupos);
+  
+        grupos.forEach(grupo => {
+          console.log("📆 Fecha fin cruda:", grupo.fecha_fin);
+
+          const div = document.createElement('div');
+          div.className = 'grupo';
+
+          // ✅ Aquí declaramos comerciosUnicos correctamente:
+          const comerciosUnicos = [
+            ...new Set((grupo.cupones || []).map(c => c.comercio))
+          ];
+
+          div.innerHTML = `
+            <h2>
+              <img src="/frontend/img/logo.PNG" alt="Logo" style="height: 24px; vertical-align: middle; margin-right: 8px;">
+              ${grupo.nombre}
+            </h2>
+            <p><strong>Incluye:</strong> 10 cupones con 6 usos cada uno</p>
+            <p><em>Total: 60 Beneficios Exclusivos</em></p>
+            <p><strong>Precio:</strong> $${Number(grupo.precio).toFixed(2)}</p>
+            <p><strong>Vigencia:</strong> ${grupo.fecha_fin 
+              ? `Válido hasta el ${formatearFecha(grupo.fecha_fin)}`
+              : "Sin definir"}
+            </p>
+            <p><strong>Aplica en los siguientes comercios:</strong></p>
+            <ul>${comerciosUnicos.length 
+              ? comerciosUnicos.map(com => `<li>${com}</li>`).join('') 
+              : "<li>No hay comercios asignados aún.</li>"}</ul>
+            <button class="boton-comprar" onclick="comprarGrupo(${grupo.id})">Comprar</button>
+          `;
+
+          contenedorGrupos.appendChild(div);
+        });
+
+
+  
+      } catch (error) {
+        console.error('Error al cargar los grupos:', error);
+        contenedorGrupos.innerHTML = '<p>Error al cargar los grupos de cupones.</p>';
+      }
+    });
+    async function comprarGrupo(grupoId) {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      localStorage.setItem("grupoPendiente", grupoId);
+      alert("Debes iniciar sesión para continuar con la compra.");
+      window.location.href = "ingresa.html";
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API}/api/crear-orden-paypal/${grupoId}`, {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      });
+
+      const text = await res.text();
+
+      try {
+        const data = JSON.parse(text);
+
+        if (res.ok && data.url) {
+          window.location.href = data.url; // 🔁 Redirige a PayPal
+        } else {
+          alert(data.error || "❌ Error al crear orden de PayPal");
+          console.warn("⚠️ Detalles de la respuesta:", data);
+        }
+      } catch (parseError) {
+        console.error("❌ Error al parsear JSON:", parseError);
+        console.log("Respuesta inesperada:", text);
+        alert("⚠️ El servidor respondió con datos inesperados:\n" + text);
+      }
+
+    } catch (err) {
+      console.error("❌ Error de red al crear orden:", err);
+      alert("Error de red al iniciar el pago.");
+    }
+  }
+
+  function formatearFecha(fechaISO) {
+    if (!fechaISO) return "Sin definir";
+
+    const fecha = new Date(fechaISO);
+
+    if (isNaN(fecha)) {
+      // 🔥 Si no se puede convertir, mostramos directo
+      return fechaISO;
+    }
+
+    const dia = String(fecha.getDate()).padStart(2, '0');
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+    const año = fecha.getFullYear();
+    return `${dia}-${mes}-${año}`;
+  }
+
+    function obtenerVigencia(grupo) {
+      if (grupo.fecha_fin) {
+        return `Hasta el ${formatearFecha(grupo.fecha_fin)}`;
+      }
+      return "Sin definir";
+    }
+  </script>  
+</body>
+</html>

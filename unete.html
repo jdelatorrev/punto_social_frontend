@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Registro de Cliente</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    form {
+      max-width: 400px;
+      background: white;
+      padding: 20px;
+      margin: auto;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    input, button, select {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      font-size: 16px;
+    }
+    button {
+      background: #17a2b8;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #117a8b;
+    }
+    .error {
+      background: #f8d7da;
+      color: #721c24;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-left: 4px solid #dc3545;
+    }
+  </style>
+</head>
+<body>
+  <div id="header-placeholder"></div>
+  <script>
+    fetch("/frontend/header.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("header-placeholder").innerHTML = html;
+  
+        // Re-activar hamburguesa después de cargar
+        const toggle = document.getElementById("menu-toggle");
+        const nav = document.querySelector(".nav");
+        if (toggle && nav) {
+          toggle.addEventListener("click", () => {
+            nav.classList.toggle("show");
+          });
+        }
+      });
+  </script>
+  <main>
+    <section class="container-m">
+      <div class="intro">
+          <img class="logo" src="/frontend/img/logo_intro.png" alt="logo">
+          <div class="intro-quote">
+              <p>Descubre cupones exclusivos y únete a una comunidad conectada que maximiza tu ahorro gozando de un mundo de descuentos.</p>
+          </div>
+          <div class="login-header">
+            <h1>Registrate</h1>
+          </div>
+          <form id="registroForm">
+            <div id="mensajeError" class="error" style="display: none;"></div>
+            <input type="text" name="nombre" placeholder="Tu nombre" required />
+            <input type="email" name="email" placeholder="Correo electrónico" required />
+            <input type="password" name="password" placeholder="Contraseña" required />
+            <input type="text" name="telefono" placeholder="Teléfono" required />
+            <select name="vendedor_id" required>
+              <option value="">Selecciona tu vendedor</option>
+            </select>
+            <button type="submit">Registrarme</button>
+            <div class="join">
+              <p style="text-align:center; margin-top:10px;"><a href="olvide.html">¿Olvidaste tu contraseña?</a></p>
+              <p style="text-align:center; margin-top:10px;">¿Ya tienes cuenta? <a href="ingresa.html">Inicia Sesión</a></p>
+            </div>
+          </form>
+      </div>
+    </section>
+  </main>
+  <script src="js/api.js"></script>
+  <script>
+    const form = document.getElementById("registroForm");
+    const errorBox = document.getElementById("mensajeError");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      errorBox.style.display = "none";
+      const button = form.querySelector("button");
+      button.disabled = true;
+
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      data.tipo = "cliente";
+      data.telefono = data.telefono?.trim();
+
+      if (!data.telefono) return mostrarError("El teléfono es obligatorio.");
+      if (!data.vendedor_id) return mostrarError("Seleccioná un vendedor.");
+      if (data.nombre.trim().length < 3) return mostrarError("El nombre debe tener al menos 3 caracteres.");
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return mostrarError("Ingresá un correo electrónico válido.");
+      if (data.password.length < 6) return mostrarError("La contraseña debe tener al menos 6 caracteres.");
+
+      try {
+        const res = await fetch(`${API}/api/register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+
+        const result = await res.json();
+
+        if (!res.ok) {
+          if (result.error?.includes("duplicate")) {
+            return mostrarError("Ese correo ya está registrado. Probá con otro.");
+          }
+          return mostrarError(result.error || "Error al registrar");
+        }
+
+        const login = await fetch(`${API}/api/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: data.email, password: data.password }),
+        });
+
+        const loginData = await login.json();
+        if (login.ok) {
+          localStorage.setItem("token", loginData.token);
+          window.location.href = "cliente-panel.html";
+        } else {
+          mostrarError("Registrado, pero error al iniciar sesión");
+        }
+      } catch (err) {
+        console.error("⛔ Error:", err);
+        mostrarError("Error de conexión con el servidor.");
+      } finally {
+        button.disabled = false;
+      }
+    });
+
+    function mostrarError(msg) {
+      errorBox.textContent = msg;
+      errorBox.style.display = "block";
+      form.querySelector("button").disabled = false;
+    }
+
+    async function cargarVendedores() {
+      try {
+        const res = await fetch(`${API}/api/vendedores-activos`);
+        const vendedores = await res.json();
+
+        console.log("📦 Vendedores cargados:", vendedores);
+
+        const select = document.querySelector("select[name='vendedor_id']");
+        select.innerHTML = `<option value="">Selecciona tu vendedor</option>`;
+
+        vendedores.forEach((v) => {
+          const opt = document.createElement("option");
+          opt.value = v.id;
+          opt.textContent = `${v.nombre} (${v.email})`;
+          select.appendChild(opt);
+        });
+
+        // Auto-selección por URL si existe
+        const urlParams = new URLSearchParams(window.location.search);
+        const vendedor_id = urlParams.get("vendedor");
+        if (vendedor_id) {
+          select.value = vendedor_id;
+        }
+
+      } catch (err) {
+        console.error("❌ Error al cargar vendedores:", err);
+        mostrarError("No se pudieron cargar los vendedores.");
+      }
+    }
+
+    cargarVendedores();
+  </script>
+</body>
+</html>

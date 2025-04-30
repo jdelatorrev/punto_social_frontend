@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Punto Social | Recuperar Contraseña</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    form {
+      max-width: 400px;
+      margin: auto;
+      padding: 20px;
+      background: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    input, button {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      font-size: 16px;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .join p {
+      font-size: 14px;
+      margin-top: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container-m head">
+      <a href="/frontend/index.html"><img src="/frontend/img/logo.PNG" /></a>
+    </div>
+  </header>
+
+  <main>
+    <section class="container-m">
+      <div class="intro">
+        <img class="logo" src="/frontend/img/logo_intro.png" alt="logo">
+        <div class="intro-quote">
+          <p>Descubre cupones exclusivos y únete a una comunidad conectada que maximiza tu ahorro gozando de un mundo de descuentos.</p>
+        </div>
+        <div class="login-header">
+          <h1>Recuperar Contraseña</h1>
+        </div>
+
+        <form id="olvideForm">
+          <input type="email" name="email" placeholder="Correo electrónico" required />
+          <button type="submit">Enviar enlace</button>
+
+          <div class="join">
+            <p>¿Aún no tienes cuenta? <a href="unete.html">Regístrate</a></p>
+            <p>¿Ya tienes cuenta? <a href="ingresa.html">Inicia sesión</a></p>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script>
+    const form = document.getElementById("olvideForm");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = form.email.value.trim();
+
+      if (!email) {
+        await Swal.fire('Campo vacío', 'Por favor ingresa un correo.', 'warning');
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API}/api/olvide-password`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          await Swal.fire({
+            icon: 'success',
+            title: '¡Correo enviado!',
+            text: 'Revisa tu correo electrónico para restablecer tu contraseña.',
+            confirmButtonColor: '#3085d6'
+          });
+          form.reset();
+        } else {
+          await Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: data.error || 'No se pudo enviar el enlace.',
+            confirmButtonColor: '#d33'
+          });
+        }
+      } catch (err) {
+        await Swal.fire({
+          icon: 'error',
+          title: 'Error de conexión',
+          text: 'No se pudo contactar al servidor.',
+          confirmButtonColor: '#d33'
+        });
+      }
+    });
+  </script>
+</body>
+</html>

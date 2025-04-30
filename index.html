@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Punto Social</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="header-placeholder"></div>
+    <script>
+      fetch("/frontend/header.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("header-placeholder").innerHTML = html;
+    
+          // Re-activar hamburguesa después de cargar
+          const toggle = document.getElementById("menu-toggle");
+          const nav = document.querySelector(".nav");
+          if (toggle && nav) {
+            toggle.addEventListener("click", () => {
+              nav.classList.toggle("show");
+            });
+          }
+        });
+    </script>
+    <main>
+        <section class="container-m">
+            <div class="intro">
+                <img class="logo" src="/frontend/img/logo_intro.png" alt="logo">
+                <div class="intro-logo">
+                    <img src="/frontend/img/telefono.png" alt="telefono">
+                </div>
+                <div class="intro-quote">
+                    <p>Descubre cupones exclusivos y únete a una comunidad conectada que maximiza tu ahorro gozando de un mundo de descuentos.</p>
+                </div>
+                <!-- <div class="benefits">
+                    <div class="benefits-list">
+                        <img src="/frontend/img/cupones.PNG" alt="cupons">
+                        <p>CUPONES EXCLUSIVOS</p>
+                        <img src="/frontend/img/comunidad.PNG" alt="community">
+                        <p>COMUNIDAD CONECTADA</p>
+                        <img src="/frontend/img/estrategia.PNG" alt="stretegy">
+                        <p>ESTRATEGIAS INNOVADORAS</p>
+                    </div>
+                </div> -->
+                <div class="buy">
+                    <a href="/frontend/unete.html"><p>Únete Ahora</p></a>
+                </div>
+            </div>
+        </section>
+        <section class="section-2 bg-black">
+            <div class="container-m">
+                <h1>Beneficios Exclusivos de Punto Social</h1>
+                <div class="benefits-list-2">
+                    <div class="benefit">
+                        <img src="/frontend/img/ahorro.PNG" alt="savings">
+                        <h3>Ahorro Garantizado</h3>
+                        <p>Maximiza tus ahorros con descuentos verificados y ofertas exclusivas.</p>
+                    </div>
+                    <div class="benefit">
+                        <img src="/frontend/img/cupones-2.png" alt="savings">
+                        <h3>Cupones Personalizados</h3>
+                        <p>Obtén cupones diseñados específicamente para tus necesidades y preferencias.</p>
+                    </div>
+                    <div class="benefit">
+                        <img src="/frontend/img/estrategia-2.png" alt="savings">
+                        <h3>Estratégias Efectivas</h3>
+                        <p>Implementa tácticas de marketing innovadoras que generan resultados tangibles.</p>
+                    </div>
+                    <div class="benefit">
+                        <img src="/frontend/img/comunidad-2.png" alt="savings">
+                        <h3>Comunidad Activa</h3>
+                        <p>Conéctate con otros usuarios, comparte experiencias y decubre nuevas ofertas.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section-3">
+            <div class="container-m ">
+                <h1>El Impacto de Punto Social en Números</h1>
+                <p>Descubre cómo Punto Social está transformando la experiencia de compra y generando ahorros significativos para nuestra comunidad</p>
+                <div class="stats">
+                    <div>
+                        <h2>+1,000</h2>
+                        <h3>Usuarios Activos</h3>
+                        <p>Uniéndose a una comunidad que maximiza su ahorro.</p>
+                    </div>
+                    <div class="sales">
+                        <h2>$500,000 +</h2>
+                        <h3>Ahorro Generado</h3>
+                        <p>Gracias a nuestros cupones exclusivos y ofertas verificadas.</p>
+                    </div>
+                    <div>
+                        <h2>100K+</h2>
+                        <h3>Compras Realizadas</h3>
+                        <p>Con la confianza y satisfacción de nuestros usuarios.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="bg-black">
+            <div class="save">
+                <div class="save-photo">
+                    <img src="/frontend/img/ahorro-land.PNG" alt="save-photo">
+                </div>
+                <div class="save-text">
+                    <p class="head">Comienza tu viaje de ahorro</p>
+                    <h1>No te pierdas nuestras ofertas exclusivas</h1>
+                    <p>Únete a Punto Social hoy mismo y comienza a disfrutar de descuentos verificados y una comunidad conectada que transformará tu experiencia de compra.</p>
+                    <!-- <p class="join">ÚNETE AHORA</p> -->
+                     <div class="buynow">
+                         <a href="/frontend/servicios.html"><img src="/frontend/img/buynow.png" alt="buy now"></a>
+                     </div>
+                </div>
+            </div>
+        </section>
+        <section class="section-5">
+            <div class="container-m">
+                <div class="customers">
+                    <div class="customers-benefits">
+                        <h1>Especialidad en venta por cupones</h1>
+                        <p class="highlight">NUESTROS CLIENTES</p>
+                        <p>En Punto Social, nos enorgullece destacarnos en la especialidad única de venta y publicidad por cupones.</p>
+                        <p>Diseñamos estrategias exclusivas que aprovechan el poder de los cupones para impulsar las ventas y fortalecer la conexión entre las marcas y su audiencia.</p>
+                    </div>
+                    <div>
+                        <h2>AQUÍ VAN LOS CLIENTES</h2>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section-6 bg-black">
+            <div class="container-m contact">
+                <a href="/frontend/index.html"><img src="/frontend/img/logo-neg.PNG" alt="logo black"></a>
+                <a href="/frontend/contacto.html"><h3>Contáctanos</h3></a>
+                <p>Escríbanos para recibir una cotización sobre proyectos creativos en cualquier parte del mundo.</p>
+                <p>Teléfonos Querétaro:</p>
+                <div class="phones">
+                    <a href="tel:4481202409" target="_blank"><p>448-120-2409</p></a>
+                    <a href="tel:4481202409" target="_blank"><p>448-136-6363</p></a>
+                    <!-- <p>449-417-7400</p> -->
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="footer bg-black">
+        <div class="social">
+            <a href="https://www.facebook.com/people/Punto-Social/61573128405104/?mibextid=wwXIfr&rdid=dsoJ4OM5x1Ak9SkS&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F12HULzzNEgn%2F%3Fmibextid%3DwwXIfr" target="_blank"><li><img src="/frontend/img/facebook.png"></li></a>
+            <a href="https://www.instagram.com/puntosocialoficial" target="_blank"><li><img src="/frontend/img/instagram.png"></li></a>
+            <a href="https://www.tiktok.com/@puntosocialoficial?_t=ZM-8uyzSRk6Xyf&_r=1" target="_blank"><li><img src="/frontend/img/tiktok.png"></li></a>
+            <a href="https://wa.me/524481202409" target="_blank"><li><img src="/frontend/img/whatsapp.png"></li></a>
+        </div>
+        <p class="copyright">Punto Social 2025©</p>
+        <p class="copyright">Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>

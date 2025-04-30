@@ -1,0 +1,1950 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Punto Social | ADMIN</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body { font-family: 'Montserrat', sans-serif; background: #f4f4f4;}
+    header {
+      background: #343a40; color: white; padding: 10px 20px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    header h1 { margin: 0; font-size: 22px; }
+    header span { font-size: 2rem; margin-right: 5rem; }
+    section {
+      background: white; padding: 15px; margin: 20px auto; max-width: 960px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-left: 6px solid rgb(55, 55, 161);
+    }
+    table {
+      width: 100%; border-collapse: collapse; margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid #ddd; padding: 8px; text-align: left;
+    }
+    th { background-color: rgb(55, 55, 161); color: white; }
+    .botones { margin-bottom: 10px; }
+    .botones button {
+      margin-right: 10px; padding: 8px 16px;
+      background: #28a745; border: none; color: white; cursor: pointer;
+    }
+    .botones button:hover { background: #218838; }
+    #cerrar {
+      display: block; margin: 30px auto; padding: 10px 20px;
+      background: #333; color: white; border: none; cursor: pointer;
+    }
+    .habilitar-btn {
+      padding: 4px 8px;
+      background: #ffc107;
+      color: black;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+      margin-left: 5px;
+    }
+    .edit-input {
+      width: 95%;
+      padding: 3px;
+      font-size: 14px;
+    }
+
+    .habilitar-btn:hover {
+    background-color: #0056b3;
+  }
+
+  #paginacion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  #paginacion button {
+    padding: 8px 16px;
+    margin: 0 5px;
+    font-size: 14px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  #paginacion button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+
+  #pagina-actual {
+    font-size: 14px;
+    margin: 0 10px;
+  }
+  .sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: 220px;
+  height: 100%;
+  background: #000; /* Negro elegante */
+  color: white;
+  padding-top: 20px;
+  font-family: 'Montserrat', sans-serif;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+  z-index: 1000;
+}
+
+
+.sidebar h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 18px;
+  color: #e0e0e0;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+}
+
+.sidebar ul li {
+  padding: 12px 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s;
+  font-size: 15px;
+}
+
+.sidebar ul li i {
+  margin-right: 36px; /* más separación */
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.8;
+  color: #e0e0e0;
+}
+
+.sidebar ul li:hover {
+  background: #1a1a1a; /* Gris muy oscuro */
+}
+body {
+  margin-left: 220px; /* espacio para el sidebar */
+  background: #f4f4f9;
+  font-family: 'Montserrat', sans-serif;
+}
+.sidebar ul li.active {
+  background: #383854;
+  font-weight: bold;
+}
+
+.asignar-cupones-container {
+  background: #fff; /* Fondo claro para el formulario */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* Sombra más sutil */
+  color: #333;
+  margin: 40px auto;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.asignar-cupones-container h2 {
+  color: #222;
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.asignar-cupones-container label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: #444;
+}
+
+
+.asignar-cupones-container select,
+.asignar-cupones-container input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff; /* Fondo claro */
+  color: #333;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.asignar-cupones-container select:focus,
+.asignar-cupones-container input:focus {
+  outline: none;
+  border-color: #888;
+}
+
+.asignar-cupones-container button {
+  width: 100%;
+  padding: 12px;
+  background: rgba(55, 55, 161,0.9);
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.asignar-cupones-container button:hover {
+  background: rgb(55, 55, 161);
+}
+
+button {
+    background: #3737a1; /* Azul elegante */
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    font-family: 'Montserrat', sans-serif;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+
+  button:hover {
+    background: #2c2c82; /* Más oscuro al pasar */
+    transform: translateY(-1px);
+  }
+
+  button:disabled {
+    background: #999;
+    cursor: not-allowed;
+  }
+
+  /* Estilo especial para botones pequeños como editar, eliminar */
+  button.icon-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+    margin-right: 5px;
+    border-radius: 4px;
+  }
+
+  /* Botón de cerrar sesión */
+  #cerrar {
+    background: #111;
+    font-weight: bold;
+    margin-top: 40px;
+  }
+
+  #cerrar:hover {
+    background: #333;
+  }
+
+  /* Botones específicos en paginación */
+  #paginacion button {
+    background: #3737a1;
+  }
+
+  #paginacion button:hover {
+    background: #2c2c82;
+  }
+
+  /* Estilo para botones de acción (editar, guardar, cancelar) */
+  .guardar-btn, .cancelar-btn, .guardar-grupo-btn, .cancelar-grupo-btn {
+    margin-top: 5px;
+  }
+
+  /* Extra: Botones de habilitar */
+  .habilitar-btn {
+    background: #ffc107;
+    color: #333;
+  }
+
+  .habilitar-btn:hover {
+    background: #e0a800;
+  }
+
+    /* 🔹 Tablas estilizadas */
+    table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    font-size: 14px;
+  }
+
+  th {
+    background-color: #3737a1;
+    color: white;
+    font-weight: 600;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  tr:hover {
+    background-color: #f1f1f1;
+  }
+
+  /* 🔹 Inputs y selects */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="date"],
+  select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    font-family: 'Montserrat', sans-serif;
+    background: #fff;
+    color: #333;
+    transition: border 0.3s, box-shadow 0.3s;
+  }
+
+  input:focus,
+  select:focus {
+    border-color: #3737a1;
+    box-shadow: 0 0 5px rgba(55, 55, 161, 0.4);
+    outline: none;
+  }
+
+  /* 🔹 Etiquetas */
+  label {
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 5px;
+    display: block;
+    font-size: 14px;
+  }
+
+  /* 🔹 Secciones */
+  section {
+    background: white;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 960px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-left: 5px solid #3737a1;
+    border-radius: 6px;
+  }
+
+  section h2, section h3 {
+    color: #333;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+
+  /* 🔹 Select personalizado */
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position-x: 100%;
+    background-position-y: 50%;
+    background-size: 16px;
+  }
+    
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Admin Panel</h2>
+    <ul>
+      <li onclick="mostrarSeccion('reporte')"><i data-lucide="bar-chart-3"></i> Reportes</li>
+      <li onclick="mostrarSeccion('vendedores')"><i data-lucide="briefcase"></i> Vendedores</li>
+      <li onclick="mostrarSeccion('clientes')"><i data-lucide="users"></i> Clientes</li>
+      <li onclick="mostrarSeccion('asignar')"><i data-lucide="wallet"></i> Asignar Cupones</li>
+      <li onclick="mostrarSeccion('grupos')"><i data-lucide="folder"></i> Grupos</li>
+      <li onclick="mostrarSeccion('cupones')"><i data-lucide="ticket"></i> Cupones</li>
+    </ul>
+  </div>
+  <header class="header">
+    <div class="container-m head">
+        <a  href="/frontend/index.html"><img src="/frontend/img/logo.PNG"></a>
+    </div>
+    <h1>Panel del Administrador</h1>
+    <span id="usuarioNombre"></span>
+  </header>
+
+  <section>
+    <h2>Reporte de Cupones Vendidos</h2>
+    <div class="botones">
+      <button onclick="exportarExcel()">📥 Exportar a Excel</button>
+    </div>
+    <div class="filtros" style="margin-bottom: 15px;">
+      <label>
+        Estado:
+        <select id="filtroEstado" onchange="filtrarCupones()">
+          <option value="todos">Todos</option>
+          <option value="usados">Usados</option>
+          <option value="no_usados">No usados</option>
+        </select>
+      </label>
+      <label>
+        Comercio:
+        <select id="filtroComercio" onchange="filtrarCupones()">
+          <option value="todos">Todos</option>
+        </select>
+      </label>
+    </div>
+    <div style="margin-bottom: 15px;">
+      <label>
+        Buscar:
+        <input type="text" id="busqueda" placeholder="Cliente o cupón..." oninput="filtrarCupones()" />
+      </label>
+    </div>
+    <div id="paginacion">
+      <button id="anterior" onclick="cambiarPagina(-1)">Anterior</button>
+      <span id="pagina-actual">1</span>
+      <button id="siguiente" onclick="cambiarPagina(1)">Siguiente</button>
+    </div>
+    
+    <table id="tabla-reporte">
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Cupon</th>
+          <th>Comercio</th>
+          <th>Descuento</th>
+          <th>Estado</th>
+          <th>Fecha Compra</th>
+          <th>Teléfono</th>
+          <th>Vendedor</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Se llenará dinámicamente -->
+      </tbody>
+    </table>
+  </section>
+  <section style="margin-top: 40px;">
+    <h2>Administración de Vendedores</h2>
+  
+    <form id="formCrearVendedor" onsubmit="crearVendedor(event)">
+      <label>Nombre: <input type="text" id="vendedor_nombre" required /></label><br><br>
+      <label>Email: <input type="email" id="vendedor_email" required /></label><br><br>
+      <label>Teléfono: <input type="text" id="vendedor_telefono" required /></label><br><br>
+      <button type="submit">Agregar Vendedor</button>
+    </form>
+  
+    <h3 style="margin-top: 30px;">Vendedores existentes</h3>
+    <table id="tabla-vendedores">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Teléfono</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+  <section style="margin-top: 40px;">
+    <h2>Clientes por Vendedor</h2>
+    <label for="vendedorSelector">Seleccioná un vendedor:</label>
+    <select id="vendedorSelector" onchange="verClientesDelVendedor()">
+      <option value="">-- Elegir --</option>
+    </select>
+    <table id="tabla-clientes-vendedor">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Teléfono</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+  <section class="asignar-cupones-container">
+    <h2>Asignar Cupones por Pago en Efectivo</h2>
+    <form id="formAsignarCupones" onsubmit="asignarCuponesManual(event)">
+      <label>Cliente: 
+        <select id="clienteSelect" required>
+          <option value="">-- Selecciona un cliente --</option>
+        </select>
+      </label>
+  
+      <label>Grupo de Cupones: 
+        <select id="grupoManualSelect" required>
+          <option value="">-- Selecciona un grupo --</option>
+        </select>
+      </label>
+  
+      <label>Vendedor: 
+        <select id="vendedorManualSelect" required>
+          <option value="">-- Selecciona un vendedor --</option>
+        </select>
+      </label>
+  
+      <label>Monto Pagado: 
+        <input type="number" step="0.01" id="montoPagado" required />
+      </label>
+      
+      <button type="submit">Asignar Cupones</button>
+    </form>
+  </section>
+  <section style="margin-top: 40px;">
+    <h2>Grupos de Cupones</h2>
+    <form id="formCrearGrupo" onsubmit="crearGrupo(event)" style="margin-bottom: 20px;">
+      <label>Nombre del grupo: <input type="text" id="grupo_nombre" required /></label><br><br>
+      <label>Descripción: <input type="text" id="grupo_descripcion" /></label><br><br>
+      <label>Precio: <input type="number" step="0.01" id="grupo_precio" required /></label><br><br>
+      <label>Fecha de fin: <input type="date" id="grupo_fecha_fin" required /></label><br><br>  
+      <button type="submit">Crear Grupo</button>
+    </form>
+  
+    <h3>Grupos Existentes</h3>
+    <table id="tabla-grupos-admin">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Precio</th>
+          <th>Fecha Fin</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    
+  </section>
+  <section style="margin-top: 40px;">
+    <h2>Creación de Cupones</h2>
+    <form id="formCrearCupon" onsubmit="crearCupon(event)" style="margin-bottom: 20px;">
+      <label>Título: <input type="text" id="titulo" required></label><br><br>
+      <label>Descripción: <input type="text" id="descripcion" required></label><br><br>
+      <label>Descuento: <input type="text" id="descuento" min="0" required></label><br><br>
+      <label>Fecha de expiración: <input type="date" id="fecha_expiracion" required></label><br><br>
+      <label>Comercio:<select id="comercioSelect" required></select></label><br><br>
+      <label>Grupo:<select id="grupoSelect" required><option value="">-- Selecciona un grupo --</option></select></label><br><br>
+      <button type="submit">Crear cupón</button>
+    </form>
+
+    <h3>Cupones Existentes</h3>
+    <table id="tabla-cupones-admin">
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Descripción</th>
+          <th>Descuento</th>
+          <th>Expira</th>
+          <th>Comercio</th>
+          <th>Grupo</th>
+          <th>Descripción del Grupo</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+  <div id="contenedor-cupones-por-grupo" class="cuponesadmin" style="display:none;"></div>
+  <section id="generarCodigosSection" class="asignar-cupones-container" style="display: none;">
+    <h2>Generar Códigos Únicos</h2>
+  
+    <label>Seleccionar Grupo:
+      <select id="grupoSelectCodigos" required>
+        <option value="">-- Selecciona un grupo --</option>
+      </select>
+    </label>
+  
+    <label>Cantidad de Códigos:
+      <input type="number" id="cantidadCodigos" min="1" placeholder="Ej. 10" required>
+    </label>
+  
+    <button onclick="generarCodigos()">Generar Códigos</button>
+  
+    <div id="listaCodigosGenerados" style="margin-top: 20px;"></div>
+  </section>
+  
+
+  <button id="cerrar" onclick="cerrarSesion()">Cerrar sesión</button>
+
+  <script src="js/api.js"></script>
+  <script>
+    const token = localStorage.getItem("token");
+    let datosReporte = [];
+    let listaComercios = [];
+  
+  
+    function cerrarSesion() {
+      localStorage.removeItem("token");
+      window.location.href = "ingresa.html";
+    }
+  
+    function verificarTokenValido() {
+      if (!token) window.location.href = "ingresa.html";
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        if (payload.exp < Math.floor(Date.now() / 1000)) {
+          Swal.fire('Sesión expirada', 'Por favor inicia sesión de nuevo.', 'warning').then(() => {
+            localStorage.removeItem("token");
+            window.location.href = "ingresa.html";
+          });
+        }
+        document.getElementById("usuarioNombre").textContent = payload.nombre;
+        return payload;
+      } catch (err) {
+        localStorage.removeItem("token");
+        window.location.href = "ingresa.html";
+      }
+    }
+  
+    async function cargarComercios() {
+      const res = await fetch(`${API}/api/admin/usuarios`, {
+        headers: { Authorization: "Bearer " + token }
+      });
+      const usuarios = await res.json();
+      listaComercios = usuarios.filter(u => u.tipo === "comercio"); // ⬅️ Guardamos
+  
+      const select = document.getElementById("comercioSelect");
+      select.innerHTML = "";
+      listaComercios.forEach(c => {
+        const option = document.createElement("option");
+        option.value = c.id;
+        option.textContent = c.nombre;
+        select.appendChild(option);
+      });
+    }
+  
+    async function crearCupon(e) {
+      e.preventDefault();
+  
+      const grupo_id = document.getElementById("grupoSelect").value;
+      if (!grupo_id) {
+        await Swal.fire('Grupo requerido', 'Por favor selecciona un grupo para el cupón.', 'warning');
+        return;
+      }
+  
+      const datos = {
+        titulo: document.getElementById("titulo").value,
+        descripcion: document.getElementById("descripcion").value,
+        descuento: document.getElementById("descuento").value,
+        fecha_expiracion: document.getElementById("fecha_expiracion").value,
+        comercio_id: document.getElementById("comercioSelect").value,
+        grupo_id: document.getElementById("grupoSelect").value
+      };
+  
+      try {
+        const res = await fetch(`${API}/api/admin/crear-cupon`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token
+          },
+          body: JSON.stringify(datos)
+        });
+  
+        const contentType = res.headers.get("content-type");
+        const respuestaCruda = await res.text();
+        console.log("📦 Respuesta cruda del backend:", respuestaCruda);
+  
+        if (!contentType || !contentType.includes("application/json")) {
+          alert("⚠️ Error inesperado del servidor:\n" + respuestaCruda);
+          return;
+        }
+  
+        const data = JSON.parse(respuestaCruda);
+  
+        if (res.ok) {
+          await Swal.fire('Éxito', 'Cupón creado correctamente', 'success');
+          document.getElementById("formCrearCupon").reset();
+          cargarCuponesAdmin();
+        } else {
+          await Swal.fire('Error', data.error || 'Error al crear cupón', 'error');
+        }
+  
+      } catch (err) {
+        console.error("⛔ Error de conexión o parseo:", err);
+        await Swal.fire('Error', 'Error de conexión o respuesta inválida.', 'error');
+      }
+    }
+  
+  
+    function formatearFecha(fechaISO) {
+      if (!fechaISO) return '-';
+      const fecha = new Date(fechaISO);
+      const dia = String(fecha.getDate()).padStart(2, '0');
+      const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+      const año = fecha.getFullYear();
+      return `${dia}-${mes}-${año}`;
+    }
+  
+    function cargarCuponesAdmin() {
+      fetch(`${API}/api/admin/cupones`, {
+        headers: { Authorization: "Bearer " + token }
+      })
+        .then(res => res.json())
+        .then(cupones => {
+          const tbody = document.querySelector("#tabla-cupones-admin tbody");
+          tbody.innerHTML = "";
+          cupones.forEach(c => {
+            const grupo = listaGrupos.find(g => g.id === c.grupo_id) || {};
+            const tr = document.createElement("tr");
+            tr.setAttribute("data-id", c.id);
+            tr.innerHTML = `
+              <td><span>${c.titulo}</span><input type="text" class="edit-input" style="display:none" value="${c.titulo}" /></td>
+              <td><span>${c.descripcion || ''}</span><input type="text" class="edit-input" style="display:none" value="${c.descripcion || ''}" /></td>
+              <td><span>${c.descuento}</span><input type="text" class="edit-input" style="display:none" value="${c.descuento}" /></td>
+              <td>
+                <span>${formatearFecha(c.fecha_expiracion)}</span>
+                <input type="date" class="edit-input fecha-expiracion-edit" style="display:none" value="${c.fecha_expiracion?.split('T')[0] || ''}" />
+              </td>
+              <td>
+                <span>${c.comercio}</span>
+                <select class="edit-input" style="display:none">
+                  ${listaComercios.map(com => `
+                    <option value="${com.id}" ${com.nombre === c.comercio ? "selected" : ""}>${com.nombre}</option>
+                  `).join("")}
+                </select>
+              </td>
+              <td>
+                <span>${c.grupo}</span>
+                <select class="edit-input grupo-edit" style="display:none">
+                  ${listaGrupos.map(g => `
+                    <option value="${g.id}" ${g.id === c.grupo_id ? 'selected' : ''}>${g.nombre}</option>
+                  `).join("")}
+                </select>
+              </td>
+              <td>
+                <span>${c.grupo_descripcion || ''}</span>
+                <input type="text" class="edit-input grupo-descripcion-edit" style="display:none" value="${c.grupo_descripcion || ''}" />
+              </td>
+              <td>
+                <button onclick="habilitarEdicion(${c.id})">✏️ Editar</button>
+                <button class="guardar-btn" style="display:none" onclick="guardarEdicion(${c.id})">💾 Guardar</button>
+                <button class="cancelar-btn" style="display:none" onclick="cancelarEdicion(${c.id})">❌ Cancelar</button>
+                <button onclick="eliminarCupon(${c.id})">🗑 Eliminar</button>
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+        });
+    }
+
+  
+  
+    function habilitarEdicion(id) {
+      const row = document.querySelector(`tr[data-id='${id}']`);
+      row.querySelectorAll("span").forEach(el => el.style.display = "none");
+      row.querySelectorAll(".edit-input").forEach(el => el.style.display = "inline-block");
+      row.querySelector(".guardar-btn").style.display = "inline-block";
+      row.querySelector(".cancelar-btn").style.display = "inline-block";
+    }
+  
+    function cancelarEdicion(id) {
+      const row = document.querySelector(`tr[data-id='${id}']`);
+      row.querySelectorAll("span").forEach(el => el.style.display = "inline");
+      row.querySelectorAll(".edit-input").forEach(el => el.style.display = "none");
+      row.querySelector(".guardar-btn").style.display = "none";
+      row.querySelector(".cancelar-btn").style.display = "none";
+    }
+
+    
+  
+    function guardarEdicion(id) {
+      const row = document.querySelector(`tr[data-id='${id}']`);
+      const inputs = row.querySelectorAll(".edit-input");
+  
+      const titulo = inputs[0].value.trim();
+      const descripcion = inputs[1].value.trim();
+      const descuento = inputs[2].value.trim();
+      const fecha_expiracion = row.querySelector(".fecha-expiracion-edit").value.trim();
+      const comercio_id = inputs[4].value;
+      const grupo_id = row.querySelector(".grupo-edit").value;
+      const grupo_descripcion = row.querySelector(".grupo-descripcion-edit").value;
+  
+      if (!titulo || !descripcion || !descuento || !fecha_expiracion || !comercio_id || !grupo_id) {
+        Swal.fire('Campos incompletos', 'Todos los campos son obligatorios.', 'warning');
+        return;
+      }
+
+      // Validar formato de fecha
+      const regexFecha = /^\d{4}-\d{2}-\d{2}$/;
+      if (!regexFecha.test(fecha_expiracion)) {
+        Swal.fire('Formato inválido', 'La fecha debe ser YYYY-MM-DD.', 'warning');
+        return;
+      }
+  
+      const datos = {
+        titulo,
+        descripcion,
+        descuento,
+        fecha_expiracion,
+        comercio_id,
+        grupo_id
+      };
+  
+      fetch(`${API}/api/admin/cupones/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token
+        },
+        body: JSON.stringify(datos)
+      })
+        .then(res => res.json())
+        .then(async data => {
+          if (data.message) {
+            // ✅ Si el cupón se actualizó, actualiza también la descripción del grupo
+            if (grupo_descripcion.trim() !== "") {
+              await fetch(`${API}/api/admin/grupos/${grupo_id}`, {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: "Bearer " + token
+                },
+                body: JSON.stringify({ descripcion: grupo_descripcion })
+              });
+            }
+  
+            await Swal.fire('Guardado', 'Cupón actualizado correctamente', 'success');
+            cargarCuponesAdmin();
+          } else {
+            await Swal.fire('Error', data.error || 'No se pudo actualizar el cupón.', 'error');
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          Swal.fire('Error', '⛔ Error de conexión con el servidor.', 'error');
+        });
+    }
+  
+  
+  
+  
+    function cargarFiltroComercios(data) {
+      const select = document.getElementById("filtroComercio");
+      const comerciosUnicos = [...new Set(data.map(row => row.comercio))];
+      comerciosUnicos.forEach(comercio => {
+        const option = document.createElement("option");
+        option.value = comercio;
+        option.textContent = comercio;
+        select.appendChild(option);
+      });
+    }
+  
+    let paginaActualGeneral = 1;
+      const elementosPorPagina = 15;
+      let datosGlobales = []; // Guardamos aquí todos los datos
+
+      function renderTablaPaginada(data) {
+        datosGlobales = data;
+        const tbody = document.querySelector("#tabla-reporte tbody");
+        tbody.innerHTML = "";
+
+        const inicio = (paginaActualGeneral - 1) * elementosPorPagina;
+        const fin = inicio + elementosPorPagina;
+        const paginaDatos = datosGlobales.slice(inicio, fin);
+
+        paginaDatos.forEach(row => {
+          console.log("🧩 Vendedor del cliente:", row.cliente, "ID:", row.vendedor_id, "Nombre:", row.vendedor);
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${row.cliente}</td>
+            <td>${row.cupon}</td>
+            <td>${row.comercio}</td>
+            <td>${row.descuento}</td>
+            <td>
+              ${row.utilizado 
+                ? `✅ <button class="habilitar-btn" onclick="habilitarCupon(${row.id})">Habilitar</button>` 
+                : `❌ <button class="habilitar-btn" onclick="marcarUtilizado(${row.id})">Marcar como usado</button>`}
+            </td>
+            <td>${formatearFecha(row.fecha_compra)}</td>
+            <td>
+              <input type="text" value="${row.telefono || ''}" 
+                onchange="actualizarTelefonoCliente('${row.cliente}', '${row.telefono}', this.value)" />
+            </td>
+            <td>
+              <select id="vendedorSelect-${row.id}" disabled>
+                <option value="">-- Ninguno --</option>
+                ${vendedoresGlobal
+                  .filter(v => v.activo)
+                  .map(v => `
+                    <option value="${v.id}" ${v.id === row.vendedor_id ? 'selected' : ''}>
+                      ${v.nombre}
+                    </option>
+                  `).join('')}
+              </select>
+              <button onclick="editarVendedor(${row.id})">✏️</button>
+              <button style="display:none;" id="guardarVendedorBtn-${row.id}" onclick="guardarVendedor(${row.id}, '${row.cliente}')">💾</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        actualizarControlesPaginacion();
+      }
+
+
+
+      function actualizarControlesPaginacion() {
+        const totalPaginas = Math.ceil(datosGlobales.length / elementosPorPagina);
+        document.getElementById("pagina-actual").textContent = `Página ${paginaActualGeneral} de ${totalPaginas}`;
+        document.getElementById("anterior").disabled = paginaActualGeneral === 1;
+        document.getElementById("siguiente").disabled = paginaActualGeneral === totalPaginas;
+      }
+
+      // Llama esta función con tus datos iniciales
+      // renderTablaPaginada(tusDatos);  
+  
+async function habilitarCupon(id) {
+  const confirmacion = await Swal.fire({
+    title: '¿Habilitar cupón?',
+    text: 'Este cupón volverá a estar disponible para el cliente.',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Sí, habilitar',
+    cancelButtonText: 'Cancelar'
+  });
+
+  if (!confirmacion.isConfirmed) return;
+
+  try {
+    const res = await fetch(`${API}/api/admin/habilitar-cupon/${id}`, {
+      method: "POST",
+      headers: { Authorization: "Bearer " + token }
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      await Swal.fire('Habilitado', 'El cupón ha sido habilitado nuevamente.', 'success');
+      cargarReporte();
+    } else {
+      await Swal.fire('Error', data.error || 'No se pudo habilitar el cupón.', 'error');
+    }
+  } catch (err) {
+    console.error("⛔ Error de red:", err);
+    await Swal.fire('Error', 'Error de conexión con el servidor.', 'error');
+  }
+}
+
+  
+    async function marcarUtilizado(id) {
+      try {
+        const res = await fetch(`${API}/api/admin/marcar-utilizado/${id}`, {
+          method: "POST",
+          headers: { Authorization: "Bearer " + token }
+        });
+  
+        const contentType = res.headers.get("content-type");
+        const textoPlano = await res.text();
+        console.log("📦 Respuesta cruda:", textoPlano);
+  
+        if (!contentType || !contentType.includes("application/json")) {
+          alert("⚠️ Error inesperado del servidor:\n" + textoPlano);
+          return;
+        }
+  
+        const data = JSON.parse(textoPlano);
+        if (res.ok) {
+          await Swal.fire('Marcado', 'Cupón marcado como utilizado.', 'success');
+          cargarReporte();
+        } else {
+          await Swal.fire('Error', data.error || 'Error al marcar cupón.', 'error');
+        }
+  
+      } catch (err) {
+        await Swal.fire('Error', '⛔ Error al marcar como utilizado.', 'error');
+      }
+    }
+  
+    function filtrarCupones() {
+      const estado = document.getElementById("filtroEstado").value;
+      const comercioSeleccionado = document.getElementById("filtroComercio").value;
+      const textoBusqueda = document.getElementById("busqueda")?.value.toLowerCase() || "";
+  
+      const filtrados = datosReporte.filter(row => {
+        const coincideEstado =
+          estado === "todos" ||
+          (estado === "usados" && row.utilizado) ||
+          (estado === "no_usados" && !row.utilizado);
+  
+        const coincideComercio =
+          comercioSeleccionado === "todos" || row.comercio === comercioSeleccionado;
+  
+        const coincideBusqueda =
+          row.cliente.toLowerCase().includes(textoBusqueda) ||
+          row.cupon.toLowerCase().includes(textoBusqueda);
+  
+        return coincideEstado && coincideComercio && coincideBusqueda;
+      });
+  
+      renderTabla(filtrados);
+    }
+  
+    async function cargarReporte() {
+      try {
+        const res = await fetch(`${API}/api/admin/reporte-cupones`, {
+          headers: { Authorization: "Bearer " + token }
+        });
+
+        if (!res.ok) throw new Error("Error de servidor");
+
+        const data = await res.json();
+        datosReporte = data;
+        console.log("🔎 Datos del reporte:", datosReporte);  // ← AQUÍ
+        cargarFiltroComercios(data);
+        renderTablaPaginada(data);
+      } catch (error) {
+        console.error("Error al cargar el reporte:", error);
+        Swal.fire('Error', 'Error al cargar los datos del servidor.', 'error');
+      }
+    }
+  
+    function exportarExcel() {
+      if (!datosReporte.length) {
+        Swal.fire('Sin datos', 'No hay datos para exportar.', 'info');
+        return;
+      }
+  
+      const dataExcel = datosReporte.map(row => ({
+        Cliente: row.cliente,
+        Cupón: row.cupon,
+        Comercio: row.comercio,
+        Descuento: row.descuento,
+        Usado: row.utilizado ? 'Sí' : 'No',
+        "Fecha de compra": formatearFecha(row.fecha_compra)
+      }));
+  
+      const worksheet = XLSX.utils.json_to_sheet(dataExcel);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Reporte Cupones");
+      XLSX.writeFile(workbook, "reporte-cupones.xlsx");
+    }
+  
+    const payload = verificarTokenValido();
+    if (payload && payload.tipo === "admin") {
+      cargarComercios().then(() => {
+        cargarGrupos().then(() => {
+          cargarVendedoresGlobal().then(() => {
+            mostrarVendedoresTabla();
+            cargarVendedoresSelector();
+            cargarCuponesAdmin();
+            cargarReporte();
+            cargarClientes(); // 👈 Agregar esto
+            cargarVendedoresParaManual(); // 👈 Y esto
+          });
+        });
+      });
+    }
+    async function cargarReporte() {
+      if (!vendedoresGlobal.length) {
+        await cargarVendedoresAdmin(); // 👈 se asegura que esté cargado
+      }
+  
+      try {
+        const res = await fetch(`${API}/api/admin/reporte-cupones`, {
+          headers: { Authorization: "Bearer " + token }
+        });
+  
+        if (!res.ok) throw new Error("Error de servidor");
+  
+        const data = await res.json();
+        datosReporte = data;
+        cargarFiltroComercios(data);
+        renderTablaPaginada(data);
+      } catch (error) {
+        console.error("Error al cargar el reporte:", error);
+        Swal.fire('Error', 'Error al cargar los datos del servidor.', 'error');
+      }
+    }
+  
+  
+    async function editarCupon(id) {
+      const cupon = datosReporte.find(c => c.id === id) || {};
+
+      const { value: formValues } = await Swal.fire({
+        title: 'Editar Cupón',
+        html:
+          `<input id="swal-input1" class="swal2-input" placeholder="Título" value="${cupon.titulo}">
+          <input id="swal-input2" class="swal2-input" placeholder="Descripción" value="${cupon.descripcion || ''}">
+          <input id="swal-input3" class="swal2-input" placeholder="Descuento" value="${cupon.descuento}">
+          <input id="swal-input4" type="date" class="swal2-input" value="${cupon.fecha_expiracion?.split("T")[0] || ''}">`,
+        focusConfirm: false,
+        preConfirm: () => {
+          const fechaValida = document.getElementById('swal-input4').value.trim();
+          if (!fechaValida.match(/^\d{4}-\d{2}-\d{2}$/)) {
+            Swal.showValidationMessage('La fecha debe tener formato YYYY-MM-DD');
+            return false;
+          }
+          return [
+            document.getElementById('swal-input1').value.trim(),
+            document.getElementById('swal-input2').value.trim(),
+            document.getElementById('swal-input3').value.trim(),
+            fechaValida
+          ];
+        }
+      });
+
+      if (!formValues) return; // Cancelado
+
+      const [nuevoTitulo, nuevaDescripcion, nuevoDescuento, nuevaFecha] = formValues;
+
+      if (!nuevoTitulo || !nuevaDescripcion || !nuevoDescuento || !nuevaFecha) {
+        return Swal.fire('Campos incompletos', 'Todos los campos son obligatorios.', 'warning');
+      }
+
+      try {
+        const res = await fetch(`${API}/api/admin/cupones/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token
+          },
+          body: JSON.stringify({
+            titulo: nuevoTitulo,
+            descripcion: nuevaDescripcion,
+            descuento: nuevoDescuento,
+            fecha_expiracion: nuevaFecha
+          })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          await Swal.fire('Actualizado', '✅ Cupón actualizado correctamente.', 'success');
+          cargarCuponesAdmin();
+        } else {
+          await Swal.fire('Error', data.error || 'No se pudo actualizar el cupón.', 'error');
+        }
+
+      } catch (err) {
+        console.error(err);
+        await Swal.fire('Error', 'Error de conexión.', 'error');
+      }
+    }
+
+  
+    async function eliminarCupon(id) {
+      const confirmacion = await Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Este cupón se eliminará permanentemente.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+      });
+      if (!confirmacion.isConfirmed) return;
+  
+      fetch(`${API}/api/admin/cupones/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.message) {
+            Swal.fire('Eliminado', '🗑️ Cupón eliminado', 'success');
+            cargarCuponesAdmin();
+          } else {
+            Swal.fire('Error', data.error || 'No se pudo eliminar el cupón.', 'error');
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          Swal.fire('Error', 'Error de conexión.', 'error');
+        });
+    }
+  
+    let listaGrupos = [];
+  
+  async function crearGrupo(e) {
+    e.preventDefault();
+  
+    const nombre = document.getElementById("grupo_nombre").value.trim();
+    const descripcion = document.getElementById("grupo_descripcion").value.trim();
+    const precio = parseFloat(document.getElementById("grupo_precio").value);
+    const fecha_fin = document.getElementById("grupo_fecha_fin").value;
+  
+    if (!nombre || isNaN(precio) || !fecha_fin) {
+      return Swal.fire('Campos incompletos', 'Todos los campos son obligatorios.', 'warning');
+    }
+  
+    try {
+      const res = await fetch(`${API}/api/admin/grupos`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token
+        },
+        body: JSON.stringify({ nombre, descripcion, precio, fecha_fin })
+      });
+  
+      const data = await res.json();
+      if (res.ok) {
+        await Swal.fire('¡Éxito!', 'Grupo creado correctamente', 'success');
+        document.getElementById("formCrearGrupo").reset();
+        cargarGrupos();
+      } else {
+        await Swal.fire('Error', data.error || "Error al crear grupo", 'error');
+      }
+    } catch (err) {
+      console.error("Error al crear grupo:", err);
+      Swal.fire('Error', 'Error de conexión.', 'error');
+    }
+  }
+
+  async function cargarGrupos() {
+    try {
+      const res = await fetch(`${API}/api/admin/grupos`, {
+        headers: { Authorization: "Bearer " + token }
+      });
+
+      listaGrupos = await res.json();
+
+      const tbody = document.querySelector("#tabla-grupos-admin tbody");
+      tbody.innerHTML = "";
+
+      listaGrupos.forEach(grupo => {
+        const tr = document.createElement("tr");
+        tr.setAttribute("data-id", grupo.id);
+        tr.innerHTML = `
+          <td>${grupo.nombre}</td>
+          <td>
+            <span>${grupo.descripcion}</span>
+            <input type="text" class="edit-input" style="display:none" value="${grupo.descripcion || ''}" />
+          </td>
+          <td>
+            <span>$${parseFloat(grupo.precio).toFixed(2)}</span>
+            <input type="number" step="0.01" class="edit-input" style="display:none" value="${grupo.precio}" />
+          </td>
+          <td>
+            <span>${formatearFecha(grupo.fecha_fin)}</span>
+            <input type="date" class="edit-input fecha-fin-edit" style="display:none" value="${grupo.fecha_fin || ''}" />
+          </td>
+          <td>
+            <button onclick="habilitarEdicionGrupo(${grupo.id})">✏️ Editar</button>
+            <button class="guardar-grupo-btn" style="display:none" onclick="guardarEdicionGrupo(${grupo.id})">💾 Guardar</button>
+            <button class="cancelar-grupo-btn" style="display:none" onclick="cancelarEdicionGrupo(${grupo.id})">❌ Cancelar</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      const grupoSelect = document.getElementById("grupoSelect");
+      grupoSelect.innerHTML = `<option value="">-- Selecciona un grupo --</option>`;
+      listaGrupos.forEach(g => {
+        const option = document.createElement("option");
+        option.value = g.id;
+        option.textContent = g.nombre;
+        grupoSelect.appendChild(option);
+      });
+
+      const grupoManualSelect = document.getElementById("grupoManualSelect");
+      grupoManualSelect.innerHTML = `<option value="">-- Selecciona un grupo --</option>`;
+      listaGrupos.forEach(g => {
+        const option = document.createElement("option");
+        option.value = g.id;
+        option.textContent = g.nombre;
+        grupoManualSelect.appendChild(option);
+      });
+
+    } catch (err) {
+      console.error("Error al cargar grupos:", err);
+      await Swal.fire('Error', 'No se pudo cargar la información del servidor.', 'error');
+    }
+  }
+
+  
+  function habilitarEdicionGrupo(id) {
+          const row = document.querySelector(`#tabla-grupos-admin tr[data-id='${id}']`);
+        row.querySelectorAll("span").forEach(el => el.style.display = "none");
+        row.querySelectorAll(".edit-input").forEach(el => el.style.display = "inline-block");
+        row.querySelector(".guardar-grupo-btn").style.display = "inline-block";
+        row.querySelector(".cancelar-grupo-btn").style.display = "inline-block";
+      }
+      
+      function cancelarEdicionGrupo(id) {
+        cargarGrupos(); // simplemente recarga
+      }
+      
+      async function guardarEdicionGrupo(id) {
+        const row = document.querySelector(`#tabla-grupos-admin tr[data-id='${id}']`);
+        const inputs = row.querySelectorAll(".edit-input");
+
+        const nuevaDescripcion = inputs[0].value.trim();
+        const nuevoPrecio = parseFloat(inputs[1].value);
+        const nuevaFechaFin = row.querySelector(".fecha-fin-edit").value.trim();
+
+        if (!nuevaDescripcion || isNaN(nuevoPrecio) || !nuevaFechaFin) {
+          await Swal.fire('Campos incompletos', 'Todos los campos son obligatorios.', 'warning');
+          return;
+        }
+
+        try {
+          const res = await fetch(`${API}/api/admin/grupos/${id}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token
+            },
+            body: JSON.stringify({
+              descripcion: nuevaDescripcion,
+              precio: nuevoPrecio,
+              fecha_fin: nuevaFechaFin
+            })
+          });
+
+          const data = await res.json();
+
+          if (res.ok) {
+            await Swal.fire('Guardado', 'Grupo actualizado correctamente.', 'success');
+            cargarGrupos();
+          } else {
+            await Swal.fire('Error', data.error || 'No se pudo actualizar el grupo.', 'error');
+          }
+        } catch (err) {
+          console.error("Error al actualizar grupo:", err);
+          await Swal.fire('Error', '⛔ Error de conexión con el servidor.', 'error');
+        }
+      }
+
+  
+  async function cargarCuponesAgrupados() {
+    try {
+      const res = await fetch(`${API}/api/admin/cupones`, {
+        headers: { Authorization: "Bearer " + token }
+      });
+      const cupones = await res.json();
+  
+      // Agrupar cupones por grupo
+      cuponesPorGrupo = {};
+      paginaActual = {};
+      cupones.forEach(c => {
+        if (!cuponesPorGrupo[c.grupo_id]) {
+          cuponesPorGrupo[c.grupo_id] = {
+            nombre: c.grupo,
+            cupones: []
+          };
+          paginaActual[c.grupo_id] = 1;
+        }
+        cuponesPorGrupo[c.grupo_id].cupones.push(c);
+      });
+  
+      renderizarCuponesAgrupados();
+    } catch (err) {
+      console.error("Error al cargar cupones:", err);
+      await Swal.fire('Error', 'Error al cargar cupones agrupados', 'error');
+    }
+  }
+  
+  function renderizarCuponesAgrupados() {
+    const contenedor = document.getElementById("contenedor-cupones-por-grupo");
+    contenedor.innerHTML = "";
+  
+    Object.entries(cuponesPorGrupo).forEach(([grupoId, grupoData]) => {
+      const cupones = grupoData.cupones;
+      const totalPaginas = Math.ceil(cupones.length / 20);
+      const pagina = paginaActual[grupoId];
+      const inicio = (pagina - 1) * 20;
+      const fin = inicio + 20;
+      const cuponesPagina = cupones.slice(inicio, fin);
+  
+      const tabla = `
+        <h3>${grupoData.nombre}</h3>
+        <table border="1" style="width: 100%; margin-bottom: 10px;">
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Descripción</th>
+              <th>Descuento</th>
+              <th>Expira</th>
+              <th>Comercio</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${cuponesPagina.map(c => `
+              <tr>
+                <td>${c.titulo}</td>
+                <td>${c.descripcion}</td>
+                <td>${c.descuento}</td>
+                <td>${formatearFecha(c.fecha_expiracion)}</td>
+                <td>${c.comercio}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+        <div>
+          <button onclick="cambiarPagina(${grupoId}, -1)">⬅️</button>
+          Página <strong>${pagina}</strong> de <strong>${totalPaginas}</strong>
+          <button onclick="cambiarPagina(${grupoId}, 1)">➡️</button>
+        </div>
+        <hr />
+      `;
+  
+      contenedor.innerHTML += tabla;
+    });
+  }
+  
+  function cambiarPagina(direccion) {
+    const totalPaginas = Math.ceil(datosGlobales.length / elementosPorPagina);
+    paginaActualGeneral += direccion;
+
+    if (paginaActualGeneral < 1) paginaActualGeneral = 1;
+    if (paginaActualGeneral > totalPaginas) paginaActualGeneral = totalPaginas;
+
+    renderTablaPaginada(datosGlobales);
+  }
+  
+  // Inicializar
+  cargarCuponesAgrupados();
+  
+  async function cargarVendedoresAdmin() {
+  try {
+    const res = await fetch(`${API}/api/admin/vendedores`, {
+      headers: { Authorization: "Bearer " + token }
+    });
+    const vendedores = await res.json();
+    const tbody = document.querySelector("#tabla-vendedores tbody");
+    tbody.innerHTML = "";
+  
+    vendedores.forEach(v => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><input type="text" value="${v.nombre}" onchange="actualizarCampoVendedor(${v.id}, 'nombre', this.value)" /></td>
+        <td><input type="email" value="${v.email}" onchange="actualizarCampoVendedor(${v.id}, 'email', this.value)" /></td>
+        <td><input type="text" value="${v.telefono || ''}" onchange="actualizarCampoVendedor(${v.id}, 'telefono', this.value)" /></td>
+        <td>${v.activo ? '✅ Activo' : '❌ Inactivo'}</td>
+        <td>
+          <button onclick="cambiarEstadoVendedor(${v.id}, ${v.activo ? 0 : 1})">
+            ${v.activo ? 'Desactivar' : 'Activar'}
+          </button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  } catch (err) {
+    console.error("Error al cargar vendedores:", err);
+    await Swal.fire('Error', 'Error al cargar vendedores', 'error');
+  }
+  }
+  
+  async function crearVendedor(e) {
+  e.preventDefault();
+  const nombre = document.getElementById("vendedor_nombre").value.trim();
+  const email = document.getElementById("vendedor_email").value.trim();
+  const telefono = document.getElementById("vendedor_telefono").value.trim();
+  
+  try {
+    const res = await fetch(`${API}/api/admin/vendedores`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      },
+      body: JSON.stringify({ nombre, email, telefono })
+    });
+  
+    const contentType = res.headers.get("content-type");
+  
+    // 🔍 Revisa que sea JSON válido antes de intentar leerlo
+    if (!contentType || !contentType.includes("application/json")) {
+      const textoPlano = await res.text();
+      throw new Error(await Swal.fire('Error', 'Respuesta no válida del servidor:\n' + textoPlano, 'error'));
+    }
+  
+    const data = await res.json();
+  
+    if (res.ok) {
+      await Swal.fire('Éxito', '✅ Vendedor agregado', 'success');
+      document.getElementById("formCrearVendedor").reset();
+      cargarVendedoresAdmin();
+    } else {
+      await Swal.fire('Error', data.error || 'Error al crear vendedor', 'error');
+    }
+  } catch (err) {
+    console.error("Error al crear vendedor:", err);
+    await Swal.fire('Error', 'No se pudo crear el vendedor.\n' + err.message, 'error');
+  }
+  }
+  
+  async function cargarClientes() {
+    const res = await fetch(`${API}/api/admin/usuarios`, {
+      headers: { Authorization: "Bearer " + token }
+    });
+    const usuarios = await res.json();
+    const clientes = usuarios.filter(u => u.tipo === "cliente");
+
+    const clienteSelect = document.getElementById("clienteSelect");
+    clienteSelect.innerHTML = `<option value="">-- Selecciona un cliente --</option>`;
+    clientes.forEach(c => {
+      const option = document.createElement("option");
+      option.value = c.id;
+      option.textContent = c.nombre + " - " + c.email;
+      clienteSelect.appendChild(option);
+    });
+  }
+
+  async function cargarVendedoresParaManual() {
+    const vendedorSelect = document.getElementById("vendedorManualSelect");
+    vendedorSelect.innerHTML = `<option value="">-- Selecciona un vendedor --</option>`;
+    vendedoresGlobal.forEach(v => {
+      const option = document.createElement("option");
+      option.value = v.id;
+      option.textContent = v.nombre;
+      vendedorSelect.appendChild(option);
+    });
+  }
+
+  async function asignarCuponesManual(e) {
+    e.preventDefault();
+
+    const cliente_id = document.getElementById("clienteSelect").value;
+    const grupo_id = document.getElementById("grupoManualSelect").value;
+    const vendedor_id = document.getElementById("vendedorManualSelect").value;
+    const monto = parseFloat(document.getElementById("montoPagado").value);
+
+    if (!cliente_id || !grupo_id || !vendedor_id || isNaN(monto)) {
+      await Swal.fire('Campos incompletos', 'Todos los campos son obligatorios.', 'warning');
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API}/api/admin/asignar-cupones-manual`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token
+        },
+        body: JSON.stringify({ cliente_id, grupo_id, vendedor_id, monto })
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        await Swal.fire('Éxito', 'Cupones asignados correctamente', 'success');
+        document.getElementById("formAsignarCupones").reset();
+      } else {
+        await Swal.fire('Error', data.error || 'No se pudieron asignar los cupones.', 'error');
+      }
+    } catch (err) {
+      console.error("Error al asignar cupones manualmente:", err);
+      await Swal.fire('Error', 'Error de conexión.', 'error');
+    }
+  }
+
+
+  async function cambiarEstadoVendedor(id, estado) {
+  try {
+    const res = await fetch(`${API}/api/admin/vendedores/${id}/estado`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      },
+      body: JSON.stringify({ activo: estado })
+    });
+  
+    const data = await res.json();
+    if (res.ok) {
+      await Swal.fire('Actualizado', '✅ Estado actualizado correctamente.', 'success');
+      cargarVendedoresAdmin();
+    } else {
+      await Swal.fire('Error', data.error || 'No se pudo cambiar el estado.', 'error');
+    }
+  } catch (err) {
+    console.error("Error:", err);
+    Swal.fire('Error', 'Error de conexión.', 'error');
+  }
+  }
+  
+  async function actualizarCampoVendedor(id, campo, valor) {
+  try {
+    const res = await fetch(`${API}/api/admin/vendedores/${id}/actualizar`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      },
+      body: JSON.stringify({ campo, valor })
+    });
+  
+    if (!res.ok) {
+      const data = await res.json();
+      await Swal.fire('Error', data.error || 'No se pudo actualizar el campo.', 'error');
+    }
+  } catch (err) {
+    console.error("Error al actualizar campo:", err);
+  }
+  }
+  
+  async function verClientesDelVendedor() {
+    const vendedorId = document.getElementById("vendedorSelector").value;
+    if (!vendedorId) return;
+
+    try {
+      const res = await fetch(`${API}/api/admin/vendedores/${vendedorId}/clientes`, {
+        headers: { Authorization: "Bearer " + token }
+      });
+
+      if (!res.ok) throw new Error("Error al obtener clientes");
+
+      const clientes = await res.json();
+      const tbody = document.querySelector("#tabla-clientes-vendedor tbody");
+      tbody.innerHTML = "";
+
+      clientes.forEach(c => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${c.nombre}</td><td>${c.email}</td><td>${c.telefono}</td>`;
+        tbody.appendChild(tr);
+      });
+
+    } catch (err) {
+      console.error("❌ Error al cargar clientes del vendedor:", err);
+      await Swal.fire('Error', 'No se pudieron cargar los clientes del vendedor.', 'error');
+    }
+  }
+  
+  let vendedoresGlobal = [];
+  
+  async function cargarVendedoresGlobal() {
+  try {
+    const res = await fetch(`${API}/api/admin/vendedores`, {
+      headers: { Authorization: "Bearer " + token }
+    });
+    vendedoresGlobal = await res.json();
+  } catch (err) {
+    console.error("Error al cargar vendedores (global):", err);
+  }
+  }
+
+  async function cargarVendedoresSelector() {
+    const vendedorSelector = document.getElementById("vendedorSelector");
+    vendedorSelector.innerHTML = `<option value="">-- Elegir --</option>`;
+    vendedoresGlobal.forEach(v => {
+      const option = document.createElement("option");
+      option.value = v.id;
+      option.textContent = v.nombre;
+      vendedorSelector.appendChild(option);
+    });
+  }
+  
+  async function mostrarVendedoresTabla() {
+  try {
+    const res = await fetch(`${API}/api/admin/vendedores`, {
+      headers: { Authorization: "Bearer " + token }
+    });
+    const vendedores = await res.json();
+    const tbody = document.querySelector("#tabla-vendedores tbody");
+    tbody.innerHTML = "";
+  
+    vendedores.forEach(v => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><input type="text" value="${v.nombre}" onchange="actualizarCampoVendedor(${v.id}, 'nombre', this.value)" /></td>
+        <td><input type="email" value="${v.email}" onchange="actualizarCampoVendedor(${v.id}, 'email', this.value)" /></td>
+        <td><input type="text" value="${v.telefono || ''}" onchange="actualizarCampoVendedor(${v.id}, 'telefono', this.value)" /></td>
+        <td>${v.activo ? '✅ Activo' : '❌ Inactivo'}</td>
+        <td>
+          <button onclick="cambiarEstadoVendedor(${v.id}, ${v.activo ? 0 : 1})">
+            ${v.activo ? 'Desactivar' : 'Activar'}
+          </button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  } catch (err) {
+    console.error("Error al mostrar vendedores:", err);
+    await Swal.fire('Error', 'No se pudo mostrar la tabla de vendedores.', 'error');
+  }
+  }
+  
+  async function asignarVendedorCliente(nombreCliente, vendedor_id) {
+  const cliente = datosReporte.find(c => c.cliente === nombreCliente);
+  if (!cliente) return;
+  
+  try {
+    const res = await fetch(`${API}/api/admin/clientes/${cliente.id}/vendedor`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      },
+      body: JSON.stringify({ vendedor_id })
+    });
+  
+    const data = await res.json();
+    if (res.ok) {
+      await Swal.fire('Asignado', '✅ Vendedor asignado correctamente.', 'success');
+      cargarReporte();
+    } else {
+      await Swal.fire('Error', data.error || 'No se pudo asignar el vendedor.', 'error');
+    }
+  } catch (err) {
+    console.error("Error al asignar vendedor:", err);
+  }
+  }
+  
+  async function actualizarTelefonoCliente(nombreCliente, actual, nuevo) {
+  if (actual === nuevo) return;
+  
+  const cliente = datosReporte.find(c => c.cliente === nombreCliente);
+  if (!cliente) return;
+  
+  try {
+    const res = await fetch(`${API}/api/admin/clientes/${cliente.id}/telefono`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      },
+      body: JSON.stringify({ telefono: nuevo })
+    });
+  
+    const data = await res.json();
+    if (res.ok) {
+      await Swal.fire('Actualizado', '📱 Teléfono del cliente actualizado.', 'success');
+    } else {
+      await Swal.fire('Error', data.error || 'No se pudo actualizar el teléfono.', 'error');
+    }
+  } catch (err) {
+    console.error("Error al actualizar teléfono:", err);
+  }
+  }
+
+  function mostrarSeccion(seccion) {
+    // Oculta todas las secciones
+    document.querySelectorAll('section, #contenedor-cupones-por-grupo').forEach(el => el.style.display = 'none');
+
+    // Muestra solo la sección elegida
+    const secciones = {
+      'reporte': 0,
+      'vendedores': 1,
+      'clientes': 2,
+      'asignar': 3,
+      'grupos': 4,
+      'cupones': 5
+    };
+
+      const index = secciones[seccion];
+    if (typeof index !== 'undefined') {
+      document.querySelectorAll('section')[index].style.display = 'block';
+    }
+
+    if (seccion === 'cupones') {
+      document.getElementById('contenedor-cupones-por-grupo').style.display = 'block';
+    }
+
+    if (seccion === 'asignar') {
+      document.getElementById('generarCodigosSection').style.display = 'block';  // 👈 solo mostrarlo en "Asignar Cupones"
+    }
+
+    document.querySelectorAll('.sidebar ul li').forEach(li => li.classList.remove('active'));
+    document.querySelector(`.sidebar ul li:nth-child(${index + 1})`).classList.add('active');
+  }
+
+  // Muestra la primera sección al cargar
+  document.addEventListener("DOMContentLoaded", () => {
+    lucide.createIcons();
+    mostrarSeccion('reporte');
+  });
+
+  function editarVendedor(id) {
+      document.getElementById(`vendedorSelect-${id}`).disabled = false;
+      document.getElementById(`guardarVendedorBtn-${id}`).style.display = 'inline-block';
+    }
+
+    async function guardarVendedor(id, nombreCliente) {
+      const vendedor_id = document.getElementById(`vendedorSelect-${id}`).value;
+
+      if (!vendedor_id) {
+        Swal.fire('Falta seleccionar', 'Debes seleccionar un vendedor.', 'warning');
+        return;
+      }
+
+      try {
+        const cliente = datosReporte.find(c => c.id === id && c.cliente === nombreCliente);
+        console.log("🧩 Cliente buscado en datosReporte:", cliente);
+        console.log("📝 Cliente ID:", cliente ? cliente.cliente_id : null, "Nombre:", nombreCliente);
+        console.log("📝 Vendedor seleccionado ID:", vendedor_id);
+
+        if (!cliente) {
+          Swal.fire('Error', 'Cliente no encontrado.', 'error');
+          return;
+        }
+
+        const res = await fetch(`${API}/api/admin/clientes/${cliente.cliente_id}/vendedor`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token
+          },
+          body: JSON.stringify({ vendedor_id })
+        });
+
+        const respuestaCruda = await res.text();
+        console.log("📦 Respuesta cruda del backend (guardar vendedor):", respuestaCruda);
+
+        let data;
+        try {
+          data = JSON.parse(respuestaCruda);
+        } catch (e) {
+          console.error("❌ Error de parseo JSON:", e, respuestaCruda);
+          Swal.fire('Error', 'Respuesta no válida del servidor:\n' + respuestaCruda, 'error');
+          return;
+        }
+
+        if (res.ok) {
+          await Swal.fire('Guardado', 'Vendedor asignado correctamente.', 'success');
+          document.getElementById(`vendedorSelect-${id}`).disabled = true;
+          document.getElementById(`guardarVendedorBtn-${id}`).style.display = 'none';
+          await cargarReporte();
+
+          async function cargarReporte() {
+            try {
+              const res = await fetch(`${API}/api/admin/reporte-cupones`, {
+                headers: { Authorization: "Bearer " + token }
+              });
+
+              if (!res.ok) throw new Error("Error de servidor");
+
+              const data = await res.json();
+              console.log("📊 Datos del reporte después de asignar vendedor:", data);  // 👈 verifica aquí
+
+              datosReporte = data;
+              cargarFiltroComercios(data);
+              renderTablaPaginada(data);
+            } catch (error) {
+              console.error("Error al cargar el reporte:", error);
+              Swal.fire('Error', 'Error al cargar los datos del servidor.', 'error');
+            }
+          }
+        } else {
+          Swal.fire('Error', data.error || 'No se pudo asignar el vendedor.', 'error');
+        }
+      } catch (err) {
+        console.error("Error al asignar vendedor:", err);
+        Swal.fire('Error', '⛔ Error de conexión.', 'error');
+      }
+    }
+
+    // Cargar grupos en el select al abrir el panel
+    function generarCodigos() {
+      const grupo_id = document.getElementById("grupoSelectCodigos").value;
+      const cantidad = document.getElementById("cantidadCodigos").value;
+
+      if (!grupo_id || !cantidad || cantidad <= 0) {
+        return Swal.fire('Error', 'Selecciona un grupo y una cantidad válida', 'warning');
+      }
+
+      fetch(`${API}/api/admin/codigos`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token
+        },
+        body: JSON.stringify({ grupo_id, cantidad })
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.message) {
+            Swal.fire('Éxito', `${cantidad} códigos generados`, 'success');
+            mostrarCodigosGenerados(data.codigos);
+          } else {
+            Swal.fire('Error', data.error || 'No se pudieron generar los códigos', 'error');
+          }
+        })
+        .catch(err => {
+          console.error('Error al generar códigos:', err);
+          Swal.fire('Error', 'Error de conexión', 'error');
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+      mostrarSeccion('reporte');
+      cargarGruposParaCodigos();  // ✅ Asegúrate de que se llama
+    });
+    // Función para generar códigos
+
+    async function cargarGruposParaCodigos() {
+      try {
+        const res = await fetch(`${API}/api/admin/grupos`, {
+          headers: { Authorization: "Bearer " + token }
+        });
+
+        const grupos = await res.json();
+        const grupoSelectCodigos = document.getElementById("grupoSelectCodigos");
+        grupoSelectCodigos.innerHTML = `<option value="">-- Selecciona un grupo --</option>`;
+
+        grupos.forEach(g => {
+          const option = document.createElement("option");
+          option.value = g.id;
+          option.textContent = g.nombre;
+          grupoSelectCodigos.appendChild(option);
+        });
+      } catch (err) {
+        console.error("Error al cargar grupos para códigos:", err);
+        Swal.fire('Error', 'No se pudo cargar los grupos.', 'error');
+      }
+    }
+
+    function generarCodigos() {
+      const grupo_id = document.getElementById("grupoSelectCodigos").value;
+      const cantidad = document.getElementById("cantidadCodigos").value;
+
+      if (!grupo_id || !cantidad || cantidad <= 0) {
+        return Swal.fire('Error', 'Selecciona un grupo y una cantidad válida', 'warning');
+      }
+
+      fetch(`${API}/api/admin/codigos`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token
+        },
+        body: JSON.stringify({ grupo_id, cantidad })
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.message) {
+            Swal.fire('Éxito', `${cantidad} códigos generados`, 'success');
+            mostrarCodigosGenerados(data.codigos);
+          } else {
+            Swal.fire('Error', data.error || 'No se pudieron generar los códigos', 'error');
+          }
+        })
+        .catch(err => {
+          console.error('Error al generar códigos:', err);
+          Swal.fire('Error', 'Error de conexión', 'error');
+        });
+    }
+
+    // Mostrar la lista de códigos generados
+    function mostrarCodigosGenerados(codigos) {
+      const lista = document.getElementById("listaCodigosGenerados");
+      lista.innerHTML = "<h4>Códigos Generados:</h4><ul>" +
+        codigos.map(c => `<li>${c}</li>`).join('') +
+        "</ul>";
+    }
+
+
+  </script>
+  
+</body>
+</html>
