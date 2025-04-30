@@ -35,6 +35,23 @@
   </style>
 </head>
 <body>
+  <div id="header-placeholder"></div>
+  <script>
+    fetch("header.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("header-placeholder").innerHTML = html;
+  
+        // Re-activar hamburguesa después de cargar
+        const toggle = document.getElementById("menu-toggle");
+        const nav = document.querySelector(".nav");
+        if (toggle && nav) {
+          toggle.addEventListener("click", () => {
+            nav.classList.toggle("show");
+          });
+        }
+      });
+  </script>
   <h1 style="text-align:center">Registro de Administrador</h1>
   <form id="registroForm">
     <div id="mensajeError" class="error" style="display: none;"></div>

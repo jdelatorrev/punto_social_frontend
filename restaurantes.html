@@ -8,21 +8,23 @@
 </head>
 
 <body>
-    <header class="header">
-        <div class="container-m head">
-            <a  href="index.html"><img src="img/logo.png"></a>
-            <nav class="nav">
-                <ul class="nav-bar">
-                    <li><a href="quienes-somos.html">Nosotros</a></li>
-                    <li><a href="servicios.html">Servicios</a></li>
-                    <li><a href="categorias.html">Categorías</a></li>
-                    <li><a href="contacto.html">Contacto</a></li>
-                    <li class="log-in"><a href="ingresa.html">Ingresa</a></li>
-                    <li class="join-us"><a href="unete.html">Únete</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <div id="header-placeholder"></div>
+    <script>
+      fetch("header.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("header-placeholder").innerHTML = html;
+    
+          // Re-activar hamburguesa después de cargar
+          const toggle = document.getElementById("menu-toggle");
+          const nav = document.querySelector(".nav");
+          if (toggle && nav) {
+            toggle.addEventListener("click", () => {
+              nav.classList.toggle("show");
+            });
+          }
+        });
+    </script>
     <main>
         <section class="bg-black">
             <div class="container-m restaurantes">
