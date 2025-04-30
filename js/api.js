@@ -1,7 +1,7 @@
 // js/api.js
 const API = ["localhost", "127.0.0.1"].includes(window.location.hostname)
   ? "http://localhost:3000"
-  : "https://api.miapp.com";
+  : "https://puntosocialtr-production.up.railway.app";
 
 function getToken() {
   return localStorage.getItem("token");
