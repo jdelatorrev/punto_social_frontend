@@ -60,10 +60,8 @@
     <input type="password" name="password" placeholder="Contraseña" required>
     <button type="submit">Registrarme</button>
   </form>
+  <script src="js/api.js"></script>
   <script>
-    const API = window.location.hostname.includes("localhost") || window.location.hostname.includes("127.0.0.1")
-      ? "http://localhost:3000"
-      : "https://api.miapp.com";
     const form = document.getElementById("registroForm");
     const errorBox = document.getElementById("mensajeError");
 
