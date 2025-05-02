@@ -142,6 +142,7 @@
         if (res.ok && data.url) {
           window.location.href = data.url; // 🔁 Redirige a PayPal
         } else {
+          console.warn("⚠️ Detalles de la respuesta:", data);
           await Swal.fire({
             icon: "error",
             title: "Error al crear orden",
