@@ -590,4 +590,5 @@ function mostrarSeccion(seccion) {
 
 document.addEventListener("DOMContentLoaded", () => {
   mostrarSeccion('reporte');  // ← Esto para que al cargar la página se muestre por default
+  lucide.createIcons();
 });
