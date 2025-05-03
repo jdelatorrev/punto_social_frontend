@@ -610,6 +610,7 @@ document.addEventListener("DOMContentLoaded", () => {
   verificarTokenValido();
   cargarGrupos();
   cargarCuponesAdmin();
+  cargarVendedores();
   cargarVendedoresParaManual();
   cargarClientes();
   cargarReporte();
