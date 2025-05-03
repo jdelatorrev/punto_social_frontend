@@ -592,28 +592,48 @@ function mostrarSeccion(seccion) {
 
 async function cargarVendedores() {
   try {
-    const res = await fetch(`${API}/api/admin/vendedores`, { headers: { Authorization: "Bearer " + token } });
-    vendedoresGlobal = await res.json();
+    const res = await fetch(`${API}/api/admin/vendedores`, {
+      headers: { Authorization: "Bearer " + token }
+    });
+    const vendedores = await res.json();
 
-    // Aquí debes llamar para actualizar los selects
+    // 🔥 AQUI ESTA EL FIX IMPORTANTE
+    vendedoresGlobal = vendedores;
+
+    const tbody = document.querySelector("#tabla-vendedores tbody");
+    tbody.innerHTML = "";
+
+    vendedores.forEach(v => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${v.nombre}</td>
+        <td>${v.email}</td>
+        <td>${v.telefono}</td>
+        <td>${v.activo ? "Activo ✅" : "Inactivo ❌"}</td>
+        <td>
+          <button onclick="cambiarEstadoVendedor(${v.id}, ${v.activo ? 0 : 1})">${v.activo ? "Desactivar" : "Activar"}</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    // 🔥 MUY IMPORTANTE TAMBIÉN: Al terminar de cargar los vendedores, actualiza el select manual
     cargarVendedoresParaManual();
 
   } catch (err) {
-    console.error("Error cargando vendedores:", err);
+    console.error(err);
     Swal.fire("Error", "No se pudieron cargar los vendedores", "error");
   }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  mostrarSeccion('reporte');  // Muestra reporte por defecto
+  mostrarSeccion('reporte');  
   lucide.createIcons();
 
-  // 🚀 Cargar todos los datos
   verificarTokenValido();
   cargarGrupos();
   cargarCuponesAdmin();
   cargarVendedores();
-  cargarVendedoresParaManual();
   cargarClientes();
   cargarReporte();
   cargarGruposParaCodigos();
