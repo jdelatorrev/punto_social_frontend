@@ -122,10 +122,12 @@
               <select name="vendedor_id" required>
                 <option value="">Selecciona tu vendedor</option>
               </select>
-              <span class="info-tooltip">i
-                <span class="tooltip-text">Selecciona el vendedor que te invitó o asignó. Si no tienes, selecciona el que prefieras.</span>
-              </span>
-            </label>
+              <div style="position: relative; display: inline-block;">
+                <span id="info-icon" style="cursor: pointer; background: #17a2b8; color: white; border-radius: 50%; padding: 5px 10px; font-weight: bold;">i</span>
+                <div id="info-tooltip" style="display: none; position: absolute; background: #333; color: white; padding: 10px; border-radius: 5px; top: 30px; left: 0; width: 250px; font-size: 14px; z-index: 999;">
+                  Selecciona el vendedor que te recomendó o que te invitó para darte una mejor atención.
+                </div>
+              </div>
             <button type="submit">Registrarme</button>
             <div class="join">
               <p style="text-align:center; margin-top:10px;"><a href="olvide.html">¿Olvidaste tu contraseña?</a></p>
@@ -231,6 +233,25 @@
     }
 
     cargarVendedores();
+
+    const infoIcon = document.getElementById("info-icon");
+    const infoTooltip = document.getElementById("info-tooltip");
+
+    // Mostrar u ocultar al dar click
+    infoIcon.addEventListener("click", (e) => {
+      e.stopPropagation();
+      infoTooltip.style.display = infoTooltip.style.display === "none" ? "block" : "none";
+    });
+
+    // Ocultar si da click fuera
+    document.addEventListener("click", () => {
+      infoTooltip.style.display = "none";
+    });
+
+    // Evitar que se cierre si hace click en el tooltip
+    infoTooltip.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
   </script>
 </body>
 </html>
