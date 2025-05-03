@@ -1,5 +1,3 @@
-// admin-panel.js - PARTE 1: inicialización y utilidades
-
 const token = localStorage.getItem("token");
 let datosReporte = [];
 let listaComercios = [];
