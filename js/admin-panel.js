@@ -58,6 +58,7 @@ async function cargarGrupos() {
           <button onclick="habilitarEdicionGrupo(${grupo.id})">✏️ Editar</button>
           <button class="guardar-grupo-btn" style="display:none" onclick="guardarEdicionGrupo(${grupo.id})">💾 Guardar</button>
           <button class="cancelar-grupo-btn" style="display:none" onclick="cancelarEdicionGrupo(${grupo.id})">❌ Cancelar</button>
+          <button class="eliminar-grupo-btn" onclick="eliminarGrupo(${grupo.id})">🗑 Eliminar</button>
         </td>
       `;
       tbody.appendChild(tr);
@@ -90,6 +91,7 @@ function habilitarEdicionGrupo(id) {
   row.querySelectorAll(".edit-input").forEach(el => el.style.display = "inline-block");
   row.querySelector(".guardar-grupo-btn").style.display = "inline-block";
   row.querySelector(".cancelar-grupo-btn").style.display = "inline-block";
+  row.querySelector(".eliminar-grupo-btn").style.display = "inline-block";
 }
 
 function cancelarEdicionGrupo(id) {
