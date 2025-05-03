@@ -505,6 +505,22 @@ button {
       
       <button type="submit">Asignar Cupones</button>
     </form>
+
+      <h3 style="margin-top: 30px;">Generar códigos únicos para un grupo</h3>
+      <label>Seleccionar Grupo:
+        <select id="grupoSelectCodigos" required>
+          <option value="">-- Selecciona un grupo --</option>
+        </select>
+      </label>
+    
+      <label>Cantidad de Códigos:
+        <input type="number" id="cantidadCodigos" min="1" placeholder="Ej. 10" required>
+      </label>
+    
+      <button onclick="generarCodigos()">Generar Códigos</button>
+    
+      <div id="listaCodigosGenerados" style="margin-top: 20px;"></div>
+
   </section>
   <section style="margin-top: 40px;">
     <h2>Grupos de Cupones</h2>
@@ -561,24 +577,6 @@ button {
     </table>
   </section>
   <div id="contenedor-cupones-por-grupo" class="cuponesadmin" style="display:none;"></div>
-  <section id="generarCodigosSection" class="asignar-cupones-container" style="display: none;">
-    <h2>Generar Códigos Únicos</h2>
-  
-    <label>Seleccionar Grupo:
-      <select id="grupoSelectCodigos" required>
-        <option value="">-- Selecciona un grupo --</option>
-      </select>
-    </label>
-  
-    <label>Cantidad de Códigos:
-      <input type="number" id="cantidadCodigos" min="1" placeholder="Ej. 10" required>
-    </label>
-  
-    <button onclick="generarCodigos()">Generar Códigos</button>
-  
-    <div id="listaCodigosGenerados" style="margin-top: 20px;"></div>
-  </section>
-  
 
   <button id="cerrar" onclick="cerrarSesion()">Cerrar sesión</button>
 
