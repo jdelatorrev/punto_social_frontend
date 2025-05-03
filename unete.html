@@ -139,7 +139,7 @@
                 <div class="tooltip-container">
                   <span class="info-icon" tabindex="0">i</span>
                   <div class="tooltip-text">
-                    Selecciona el vendedor que te recomendó o que te invitó para darte una mejor atención personalizada.
+                    Si tu compra es en linea, selecciona Compra en Linea.
                   </div>
                 </div>
               </div>
@@ -232,7 +232,7 @@
         vendedores.forEach((v) => {
           const opt = document.createElement("option");
           opt.value = v.id;
-          opt.textContent = `${v.nombre} (${v.email})`;
+          opt.textContent = v.nombre;
           select.appendChild(opt);
         });
 
