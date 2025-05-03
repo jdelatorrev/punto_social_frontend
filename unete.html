@@ -35,6 +35,53 @@
       margin-bottom: 10px;
       border-left: 4px solid #dc3545;
     }
+    .info-tooltip {
+  position: relative;
+  background: #17a2b8;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.info-tooltip:hover .tooltip-text,
+.info-tooltip:focus .tooltip-text {
+  opacity: 1;
+  visibility: visible;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  opacity: 0;
+  width: 220px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; 
+  left: 50%;
+  transform: translateX(-50%);
+  transition: opacity 0.3s;
+}
+
+.tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
   </style>
 </head>
 <body>
@@ -71,9 +118,14 @@
             <input type="email" name="email" placeholder="Correo electrónico" required />
             <input type="password" name="password" placeholder="Contraseña" required />
             <input type="text" name="telefono" placeholder="Teléfono" required />
-            <select name="vendedor_id" required>
-              <option value="">Selecciona tu vendedor</option>
-            </select>
+            <label style="display: flex; align-items: center; gap: 8px;">
+              <select name="vendedor_id" required>
+                <option value="">Selecciona tu vendedor</option>
+              </select>
+              <span class="info-tooltip">i
+                <span class="tooltip-text">Selecciona el vendedor que te invitó o asignó. Si no tienes, selecciona el que prefieras.</span>
+              </span>
+            </label>
             <button type="submit">Registrarme</button>
             <div class="join">
               <p style="text-align:center; margin-top:10px;"><a href="olvide.html">¿Olvidaste tu contraseña?</a></p>
