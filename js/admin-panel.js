@@ -588,6 +588,20 @@ function mostrarSeccion(seccion) {
   document.querySelector(`.sidebar ul li:nth-child(${index + 1})`).classList.add('active');
 }
 
+async function cargarVendedores() {
+  try {
+    const res = await fetch(`${API}/api/admin/vendedores`, { headers: { Authorization: "Bearer " + token } });
+    vendedoresGlobal = await res.json();
+
+    // Aquí debes llamar para actualizar los selects
+    cargarVendedoresParaManual();
+
+  } catch (err) {
+    console.error("Error cargando vendedores:", err);
+    Swal.fire("Error", "No se pudieron cargar los vendedores", "error");
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   mostrarSeccion('reporte');  // Muestra reporte por defecto
   lucide.createIcons();
