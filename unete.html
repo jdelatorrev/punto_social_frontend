@@ -35,53 +35,65 @@
       margin-bottom: 10px;
       border-left: 4px solid #dc3545;
     }
-    .info-tooltip {
-  position: relative;
-  background: #17a2b8;
-  color: white;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  display: inline-block;
-  text-align: center;
-  font-weight: bold;
-  cursor: pointer;
-  font-size: 14px;
-}
+    .tooltip-container {
+      position: relative;
+      display: inline-block;
+    }
 
-.info-tooltip:hover .tooltip-text,
-.info-tooltip:focus .tooltip-text {
-  opacity: 1;
-  visibility: visible;
-}
+    .info-icon {
+      background: #17a2b8;
+      color: white;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
 
-.tooltip-text {
-  visibility: hidden;
-  opacity: 0;
-  width: 220px;
-  background-color: #333;
-  color: #fff;
-  text-align: center;
-  border-radius: 5px;
-  padding: 8px;
-  position: absolute;
-  z-index: 1;
-  bottom: 125%; 
-  left: 50%;
-  transform: translateX(-50%);
-  transition: opacity 0.3s;
-}
+    .info-icon:hover,
+    .info-icon:focus {
+      background: #138496;
+    }
 
-.tooltip-text::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  border-width: 5px;
-  border-style: solid;
-  border-color: #333 transparent transparent transparent;
-}
+    .tooltip-text {
+      visibility: hidden;
+      opacity: 0;
+      width: 250px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 8px;
+      padding: 12px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .tooltip-text::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 8px;
+      border-style: solid;
+      border-color: #333 transparent transparent transparent;
+    }
+
+    .tooltip-container:hover .tooltip-text,
+    .tooltip-container:focus-within .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
@@ -124,10 +136,10 @@
                 <select name="vendedor_id" id="vendedor_id" required style="flex: 1;">
                   <option value="">Selecciona tu vendedor</option>
                 </select>
-                <div style="position: relative;">
-                  <span id="info-icon" style="cursor: pointer; background: #17a2b8; color: white; border-radius: 50%; padding: 5px 8px; font-weight: bold;">i</span>
-                  <div id="info-tooltip" style="display: none; position: absolute; background: #333; color: white; padding: 10px; border-radius: 5px; top: 30px; left: -100px; width: 250px; font-size: 14px; z-index: 999;">
-                    Selecciona el vendedor que te recomendó o que te invitó para darte una mejor atención.
+                <div class="tooltip-container">
+                  <span class="info-icon" tabindex="0">i</span>
+                  <div class="tooltip-text">
+                    Selecciona el vendedor que te recomendó o que te invitó para darte una mejor atención personalizada.
                   </div>
                 </div>
               </div>
