@@ -599,6 +599,8 @@ async function cargarVendedores() {
 
     // 🔥 AQUI ESTA EL FIX IMPORTANTE
     vendedoresGlobal = vendedores;
+    cargarVendedoresParaManual();
+    cargarVendedoresParaClientes();
 
     const tbody = document.querySelector("#tabla-vendedores tbody");
     tbody.innerHTML = "";
@@ -617,12 +619,72 @@ async function cargarVendedores() {
       tbody.appendChild(tr);
     });
 
-    // 🔥 MUY IMPORTANTE TAMBIÉN: Al terminar de cargar los vendedores, actualiza el select manual
-    cargarVendedoresParaManual();
-
   } catch (err) {
     console.error(err);
     Swal.fire("Error", "No se pudieron cargar los vendedores", "error");
+  }
+}
+
+async function cambiarEstadoVendedor(id, nuevoEstado) {
+  try {
+    const res = await fetch(`${API}/api/admin/vendedores/${id}/estado`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+      body: JSON.stringify({ activo: nuevoEstado })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      Swal.fire("Actualizado", "Estado del vendedor actualizado.", "success");
+      cargarVendedores(); // recarga la tabla
+    } else {
+      Swal.fire("Error", data.error || "No se pudo actualizar el estado.", "error");
+    }
+
+  } catch (err) {
+    console.error(err);
+    Swal.fire("Error", "Error de conexión", "error");
+  }
+}
+
+function cargarVendedoresParaClientes() {
+  const vendedorSelector = document.getElementById("vendedorSelector");
+  vendedorSelector.innerHTML = `<option value="">-- Elegir --</option>`;
+  vendedoresGlobal.forEach(v => {
+    const option = document.createElement("option");
+    option.value = v.id;
+    option.textContent = v.nombre;
+    vendedorSelector.appendChild(option);
+  });
+}
+
+async function verClientesDelVendedor() {
+  const vendedorId = document.getElementById("vendedorSelector").value;
+  const tbody = document.querySelector("#tabla-clientes-vendedor tbody");
+  tbody.innerHTML = "";
+
+  if (!vendedorId) return;
+
+  try {
+    const res = await fetch(`${API}/api/admin/vendedores/${vendedorId}/clientes`, {
+      headers: { Authorization: "Bearer " + token }
+    });
+
+    const clientes = await res.json();
+
+    clientes.forEach(cliente => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${cliente.nombre}</td>
+        <td>${cliente.email}</td>
+        <td>${cliente.telefono}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  } catch (err) {
+    console.error(err);
+    Swal.fire("Error", "No se pudieron cargar los clientes del vendedor.", "error");
   }
 }
 
