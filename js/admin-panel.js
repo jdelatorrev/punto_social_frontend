@@ -562,3 +562,32 @@ function mostrarCodigosGenerados(codigos) {
     codigos.map(c => `<li>${c}</li>`).join("") +
     "</ul>";
 }
+
+function mostrarSeccion(seccion) {
+  document.querySelectorAll('section, #contenedor-cupones-por-grupo').forEach(el => el.style.display = 'none');
+
+  const secciones = {
+    'reporte': 0,
+    'vendedores': 1,
+    'clientes': 2,
+    'asignar': 3,
+    'grupos': 4,
+    'cupones': 5
+  };
+
+  const index = secciones[seccion];
+  if (typeof index !== 'undefined') {
+    document.querySelectorAll('section')[index].style.display = 'block';
+  }
+
+  if (seccion === 'cupones') {
+    document.getElementById('contenedor-cupones-por-grupo').style.display = 'block';
+  }
+
+  document.querySelectorAll('.sidebar ul li').forEach(li => li.classList.remove('active'));
+  document.querySelector(`.sidebar ul li:nth-child(${index + 1})`).classList.add('active');
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  mostrarSeccion('reporte');  // ← Esto para que al cargar la página se muestre por default
+});
