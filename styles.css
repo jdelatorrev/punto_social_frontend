@@ -192,7 +192,7 @@ a{
   border: solid 3px #000;
   border-radius: 40px;
   color: red;
-  width: 100%;
+  /* width: 100%; */
   padding: 2rem;
   text-align: center;
   font-size: 3rem;
@@ -253,6 +253,9 @@ a{
 /* Section 3 */
 .section-3 h1{
     padding-top: 5rem;
+}
+.section-3 p{
+  padding: 3rem 0;
 }
 @media (min-width: 768px){
     .stats{
