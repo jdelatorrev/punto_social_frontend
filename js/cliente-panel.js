@@ -12,7 +12,7 @@ function verificarTokenValido() {
         window.location.href = "ingresa.html";
       });
     } else {
-      document.getElementById("usuarioNombre").textContent = payload.nombre;
+      document.getElementById("usuarioNombre").textContent = `${payload.nombre} ${payload.apellido_paterno}`;
     }
   } catch (err) {
     Swal.fire('Token inválido', 'Por favor inicia sesión de nuevo.', 'error').then(() => {
