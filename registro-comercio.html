@@ -14,19 +14,37 @@
       margin: auto;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
-    input, button {
+    input, button, select {
       width: 100%;
-      margin-bottom: 10px;
-      padding: 10px;
+      margin-bottom: 20px;
+      padding: 10px 5px;
       font-size: 16px;
+      border: none;
+      border-bottom: 2px solid #dc3545; /* 🔴 Línea roja abajo */
+      background: transparent;
+      color: #333;
+      outline: none;
+      transition: border-color 0.3s;
     }
+
+    input:focus, select:focus {
+      border-bottom: 2px solid #a71d2a; /* 🔥 Rojo más fuerte al enfocar */
+    }
+
     button {
-      background: #28a745;
-      color: white;
+      background: #000; /* 🔲 Fondo negro */
+      color: #fff; /* 🔤 Letras blancas */
       border: none;
       cursor: pointer;
+      padding: 12px;
+      font-size: 16px;
+      transition: background 0.3s;
+      border-bottom: none; /* No línea roja en botón */
     }
-    button:hover { background: #218838; }
+
+    button:hover {
+      background: #333; /* 🔳 Gris oscuro al pasar mouse */
+    }
     .error {
       background: #f8d7da;
       color: #721c24;
@@ -53,7 +71,7 @@
         }
       });
   </script>
-  <h1 style="text-align:center">Registro de Comercio</h1>
+  <h1 style="text-align:center; padding:5rem 0;">Registro de Comercio</h1>
   <form id="registroForm">
     <div id="mensajeError" class="error" style="display: none;"></div>
     <input type="text" name="nombre" placeholder="Nombre del comercio" required>
