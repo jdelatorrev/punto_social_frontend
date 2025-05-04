@@ -15,18 +15,42 @@
     }
     input, button, select {
       width: 100%;
-      margin-bottom: 10px;
-      padding: 10px;
+      margin-bottom: 20px;
+      padding: 10px 5px;
       font-size: 16px;
+      border: none;
+      border-bottom: 2px solid #dc3545; /* 🔴 Línea roja abajo */
+      background: transparent;
+      color: #333;
+      outline: none;
+      transition: border-color 0.3s;
     }
+
+    input:focus, select:focus {
+      border-bottom: 2px solid #a71d2a; /* 🔥 Rojo más fuerte al enfocar */
+    }
+
     button {
-      background: #17a2b8;
-      color: white;
+      background: #000; /* 🔲 Fondo negro */
+      color: #fff; /* 🔤 Letras blancas */
       border: none;
       cursor: pointer;
+      padding: 12px;
+      font-size: 16px;
+      transition: background 0.3s;
+      border-bottom: none; /* No línea roja en botón */
     }
+
     button:hover {
-      background: #117a8b;
+      background: #333; /* 🔳 Gris oscuro al pasar mouse */
+    }
+
+    .error {
+      background: #f8d7da;
+      color: #721c24;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-left: 4px solid #dc3545;
     }
     .error {
       background: #f8d7da;
