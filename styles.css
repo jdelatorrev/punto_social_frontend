@@ -613,10 +613,12 @@ a{
   .quote img {
       margin: 0 auto;
       padding: 10rem;
+      max-width: 150px;
   }
   .quote .quote-text {
     margin: 0 auto;
     padding: 3rem;
+    max-width: 350px;
 }
 }
 .quote p, .quote h3, .quote h2{
