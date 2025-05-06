@@ -351,6 +351,11 @@ a{
     gap: 10rem;
   }
 }
+@media (max-width: 600px){
+  .customers{
+    padding: 5rem 0;
+  }
+}
   .customers-benefits .highlight{
     padding: 7rem 0;
     font-size: 2rem;
@@ -680,6 +685,9 @@ a{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+.text p{
+  padding: 3rem 0;
 }
 .text h3{
   color: red;
