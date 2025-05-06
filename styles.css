@@ -611,8 +611,13 @@ a{
 }
 @media (max-width: 600px) {
   .quote img {
-      max-width: 150px;
+      margin: 0 auto;
+      padding: 10rem;
   }
+  .quote .quote-text {
+    margin: 0 auto;
+    padding: 3rem;
+}
 }
 .quote p, .quote h3, .quote h2{
   color: #fff;
