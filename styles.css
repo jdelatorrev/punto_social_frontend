@@ -312,6 +312,15 @@ a{
   justify-content: center;
   padding: 10rem 0 5rem 5rem;
  }
+ @media (max-width: 600px) {
+  .save-text{
+    padding: 5rem 2rem
+   }
+  .save-photo img{
+    max-width: 100%;
+    object-fit: none;
+  }
+}
  .save-text h1{
     padding: 5rem 0;
  }
