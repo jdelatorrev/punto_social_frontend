@@ -697,6 +697,11 @@ a{
 .categories-list ul{
   margin: 0;
 }
+@media (max-width: 600px) {
+  .categories-list img {
+      max-width: 150px;
+  }
+}
 .category {
   display: flex;
   flex-direction: column;
