@@ -458,6 +458,9 @@ a{
     border-top: 35px solid rgb(220, 220, 220);
     border-right: 35px solid rgb(220, 220, 220);
   }
+  .we-text p{
+    padding-bottom: 3rem;
+  }
 
   /* History */
 @media (min-width: 768px){
