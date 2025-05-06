@@ -317,9 +317,9 @@ a{
     padding: 5rem 2rem
    }
   .save-photo img{
-    max-width: 300px;
+    max-width: 100%;
     height: auto;
-    object-fit: none;
+    object-fit: cover;
   }
 }
  .save-text h1{
