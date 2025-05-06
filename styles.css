@@ -317,7 +317,8 @@ a{
     padding: 5rem 2rem
    }
   .save-photo img{
-    max-width: 100%;
+    max-width: 300px;
+    height: auto;
     object-fit: none;
   }
 }
