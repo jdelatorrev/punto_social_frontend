@@ -609,6 +609,11 @@ a{
   max-width: 50rem;
   padding: 10rem;
 }
+@media (max-width: 600px) {
+  .quote img {
+      max-width: 150px;
+  }
+}
 .quote p, .quote h3, .quote h2{
   color: #fff;
 }
@@ -916,6 +921,11 @@ header span{
   object-fit: cover;
   max-width: 100%;
   height: 100%;
+}
+@media (max-width: 600px) {
+  .galeria-restaurante img {
+      max-width: 150px;
+  }
 }
 /* .galeria {
   display: flex;
