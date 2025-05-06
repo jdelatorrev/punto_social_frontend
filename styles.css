@@ -149,6 +149,7 @@ a{
     grid-column-start: 2;
     grid-row-start: 1;
     grid-row-end: 4;
+    padding: 5rem 0;
 }
 .intro-logo img{
   width: auto;
@@ -821,7 +822,7 @@ a{
   color: #fff;
 }
 .white-text p{
-  margin: 2rem 0;
+  margin: 5rem 0;
   color: #fff;
 }
 @media (min-width: 768px){
