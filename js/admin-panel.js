@@ -226,6 +226,29 @@ async function cargarCuponesAdmin() {
   }
 }
 
+async function cargarComercios() {
+  try {
+    const res = await fetch(`${API}/api/admin/comercios`, {
+      headers: { Authorization: "Bearer " + token }
+    });
+    const comercios = await res.json();
+
+    const select = document.getElementById("comercioSelect");
+    select.innerHTML = `<option value="">-- Selecciona un comercio --</option>`;
+
+    comercios.forEach(comercio => {
+      const option = document.createElement("option");
+      option.value = comercio.id;
+      option.textContent = comercio.nombre;
+      select.appendChild(option);
+    });
+
+  } catch (err) {
+    console.error("Error al cargar comercios:", err);
+    Swal.fire("Error", "No se pudieron cargar los comercios", "error");
+  }
+}
+
 function habilitarEdicion(id) {
   const row = document.querySelector(`tr[data-id='${id}']`);
   row.querySelectorAll("span").forEach(el => el.style.display = "none");
@@ -701,4 +724,5 @@ document.addEventListener("DOMContentLoaded", () => {
   cargarClientes();
   cargarReporte();
   cargarGruposParaCodigos();
+  cargarComercios();
 });
