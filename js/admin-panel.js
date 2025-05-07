@@ -130,7 +130,9 @@ async function guardarEdicionGrupo(id) {
   }
 }
 
-async function crearGrupoNuevo() {
+async function crearGrupoNuevo(event) {
+  event.preventDefault();
+  
   const nombre = document.getElementById("grupo_nombre").value.trim();
   const descripcion = document.getElementById("grupo_descripcion").value.trim();
   const precio = parseFloat(document.getElementById("grupo_precio").value);
