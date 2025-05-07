@@ -231,7 +231,26 @@ async function cargarComercios() {
     const res = await fetch(`${API}/api/admin/comercios`, {
       headers: { Authorization: "Bearer " + token }
     });
-    const comercios = await res.json();
+    
+    const texto = await res.text();
+    console.log("Respuesta cruda de comercios:", texto);
+    
+    try {
+      const comercios = JSON.parse(texto);
+      const select = document.getElementById("comercioSelect");
+      select.innerHTML = `<option value="">-- Selecciona un comercio --</option>`;
+      
+      comercios.forEach(comercio => {
+        const option = document.createElement("option");
+        option.value = comercio.id;
+        option.textContent = comercio.nombre;
+        select.appendChild(option);
+      });
+    
+    } catch (err) {
+      console.error("No se pudo parsear la respuesta como JSON:", err);
+      Swal.fire("Error", "La respuesta del servidor no es válida. Verifica que la API /api/admin/comercios esté disponible y respondiendo correctamente.", "error");
+    }
 
     const select = document.getElementById("comercioSelect");
     select.innerHTML = `<option value="">-- Selecciona un comercio --</option>`;
