@@ -149,7 +149,7 @@ a{
     grid-column-start: 2;
     grid-row-start: 1;
     grid-row-end: 4;
-    padding: 5rem 0;
+    padding-top: 5rem;
 }
 .intro-logo img{
   width: auto;
@@ -157,7 +157,7 @@ a{
 }
 .intro-quote{
     grid-row-start: 2;
-    margin: 5rem 0;
+    margin: 3rem 0;
 }
 .benefits{
     grid-template-columns: 1;
@@ -266,6 +266,10 @@ a{
         grid-template-columns: 1fr 1fr 1fr;
         gap: 3rem;
     }
+    .stats h3{
+      padding-top: 0;
+      text-align: start;
+  }
 }
 .stats h3{
     padding-top: 10rem;
@@ -322,6 +326,13 @@ a{
     height: auto;
     object-fit: cover;
   }
+  .save-text .head{
+    font-size: 2.5rem;
+    align-items: flex-start;
+ }
+ .buynow{
+  padding-top: 5rem;
+}
 }
  .save-text h1{
     padding: 5rem 0;
