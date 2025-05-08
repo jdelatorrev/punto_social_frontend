@@ -1038,7 +1038,7 @@ header span{
   .galeria-restaurante img {
       display: flex;
       flex-direction: column;
-      max-width: 250px;
+      max-width: 100%;
       height: auto;
   }
 }
