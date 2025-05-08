@@ -456,19 +456,11 @@ a{
   }
 
   /* Who we are */
-@media (min-width: 768px){
-  .we{
-    padding: 5rem 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    justify-items: center;
-  }
-}
   .we h2{
     color: red;
   }
   .we h1{
-    padding: 8rem 0;
+    padding: 2rem 0;
   }
   .we-photo img{
     max-width: 100%;
@@ -480,16 +472,19 @@ a{
   .we-text p{
     padding-bottom: 3rem;
   }
+  @media (min-width: 768px){
+    .we{
+      padding: 5rem 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      justify-items: center;
+    }
+    .we h1{
+      padding: 8rem 0;
+    }
+  }
 
   /* History */
-@media (min-width: 768px){
-  .history{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10rem;
-    align-items: center;
-  }
-}
 .revista p{
   color: red;
   font-weight: 500;
@@ -509,7 +504,7 @@ a{
     padding: 5rem 0;
   }
   .history-text h1{
-    padding: 3rem 0;
+    padding: 2rem 0;
   }
   .history-text h3{
     margin: 0;
@@ -520,11 +515,27 @@ a{
   .history-list{
     display: flex;
     gap: 3rem;
-    padding-top: 4rem;
     align-items: center;
   }
   .history-list p{
     margin: 0;
+  }
+  @media (min-width: 768px){
+    .history{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10rem;
+      align-items: center;
+    }
+    .history-list{
+      display: flex;
+      gap: 3rem;
+      padding-top: 4rem;
+      align-items: center;
+    }
+    .history-text h1{
+      padding: 3rem 0;
+    }
   }
 
   /* Team */
