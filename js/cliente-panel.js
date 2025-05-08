@@ -167,81 +167,94 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const menuToggle = document.getElementById('menuToggle');
   const sidebar = document.querySelector('.sidebar');
+  const sidebarLinks = document.querySelectorAll('.sidebar ul li');
 
   if (menuToggle && sidebar) {
-    menuToggle.addEventListener('click', () => sidebar.classList.toggle('active'));
+    menuToggle.addEventListener('click', (e) => {
+      e.stopPropagation(); // Para que no lo cierre inmediatamente por el click en el botón
+      sidebar.classList.toggle('show');
+    });
+
+    sidebarLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        sidebar.classList.remove('show');
+      });
+    });
   }
+
+  // Cerrar el menú si se da clic fuera del sidebar
+  document.addEventListener('click', (e) => {
+    if (sidebar.classList.contains('show') && !sidebar.contains(e.target) && e.target !== menuToggle) {
+      sidebar.classList.remove('show');
+    }
+  });
 });
 
 async function canjearCodigo() {
-    const codigo = document.getElementById("codigoInput").value.trim();
-    if (!codigo) {
-      await Swal.fire('Código vacío', 'Por favor ingresa un código válido.', 'warning');
-      return;
-    }
-  
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // Máximo 10 segundos de espera
-  
-    try {
-      const loading = Swal.fire({
-        title: 'Canjeando código...',
-        text: 'Por favor espera',
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        didOpen: () => Swal.showLoading()
-      });
-  
-      const cuponesAntes = cuponesGlobal.map(c => c.titulo);
-  
-      const res = await fetch(`${API}/api/canjear-codigo`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token
-        },
-        body: JSON.stringify({ codigo }),
-        signal: controller.signal
-      });
-  
-      clearTimeout(timeoutId);
-      Swal.close();
-  
-      const data = await res.json();
-  
-      if (res.ok && data.message) {
-        await Swal.fire('¡Éxito!', `Se te asignaron ${data.cupones} cupones 🎉`, 'success');
-  
-        await cargarCupones(); // Recarga los cupones actualizados
-  
+  const codigo = document.getElementById("codigoInput").value.trim();
+  if (!codigo) {
+    await Swal.fire('Código vacío', 'Por favor ingresa un código válido.', 'warning');
+    return;
+  }
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+  try {
+    Swal.fire({
+      title: 'Canjeando código...',
+      text: 'Por favor espera',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      didOpen: () => Swal.showLoading()
+    });
+
+    const cuponesAntes = cuponesGlobal.map(c => c.titulo);
+
+    const res = await fetch(`${API}/api/canjear-codigo`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      },
+      body: JSON.stringify({ codigo }),
+      signal: controller.signal
+    });
+
+    clearTimeout(timeoutId);
+    Swal.close();
+
+    const data = await res.json();
+
+    if (res.ok && data.message) {
+      await Swal.fire('¡Éxito!', `Se te asignaron ${data.cupones} cupones 🎉`, 'success');
+      await cargarCupones();
+
+      setTimeout(() => {
+        const nuevos = [];
+        document.querySelectorAll('.cupon').forEach(div => {
+          const titulo = div.querySelector('h3').textContent;
+          if (!cuponesAntes.includes(titulo)) {
+            div.classList.add('nuevo-cupon');
+            nuevos.push(div);
+          }
+        });
+
         setTimeout(() => {
-          const nuevos = [];
-          document.querySelectorAll('.cupon').forEach(div => {
-            const titulo = div.querySelector('h3').textContent;
-            if (!cuponesAntes.includes(titulo)) {
-              div.classList.add('nuevo-cupon');
-              nuevos.push(div);
-            }
-          });
-  
-          setTimeout(() => {
-            nuevos.forEach(div => div.classList.remove('nuevo-cupon'));
-          }, 5000);
-  
-        }, 100);
-  
-      } else {
-        await Swal.fire('Error', data.error || 'No se pudo canjear el código.', 'error');
-      }
-  
-    } catch (err) {
-      Swal.close();
-      if (err.name === 'AbortError') {
-        Swal.fire('Tiempo agotado', 'El servidor no respondió a tiempo.', 'error');
-      } else {
-        console.error('Error al canjear código:', err);
-        Swal.fire('Error', 'Ocurrió un problema de conexión.', 'error');
-      }
+          nuevos.forEach(div => div.classList.remove('nuevo-cupon'));
+        }, 5000);
+      }, 100);
+    } else {
+      await Swal.fire('Error', data.error || 'No se pudo canjear el código.', 'error');
+    }
+
+  } catch (err) {
+    Swal.close();
+    if (err.name === 'AbortError') {
+      Swal.fire('Tiempo agotado', 'El servidor no respondió a tiempo.', 'error');
+    } else {
+      console.error('Error al canjear código:', err);
+      Swal.fire('Error', 'Ocurrió un problema de conexión.', 'error');
     }
   }
-  
+}
