@@ -11,11 +11,18 @@
   <style>
     body { font-family: 'Montserrat', sans-serif; background: #f4f4f4;}
     header {
-      background: #343a40; color: white; padding: 10px 20px;
-      display: flex; justify-content: space-between; align-items: center;
+      background: #000;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
     }
     header h1 { margin: 0; font-size: 22px; }
-    header span { font-size: 2rem; margin-right: 5rem; }
+    header span {
+      font-size: 1.2rem;
+    }
     section {
       background: white; padding: 15px; margin: 20px auto; max-width: 960px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-left: 6px solid rgb(55, 55, 161);
@@ -84,42 +91,78 @@
     font-size: 14px;
     margin: 0 10px;
   }
+  #menuToggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: block;
+    margin-top: 10px;
+  }
+
+  #menuToggle svg {
+    width: 32px;
+    height: 32px;
+    color: red;
+    transition: transform 0.3s ease;
+  }
+
+  #menuToggle:hover svg {
+    transform: scale(1.2);
+  }
   .sidebar {
-  position: fixed;
-  top: 0; left: 0;
-  width: 220px;
-  height: 100%;
-  background: #000; /* Negro elegante */
-  color: white;
-  padding-top: 20px;
-  font-family: 'Montserrat', sans-serif;
-  box-shadow: 2px 0 5px rgba(0,0,0,0.3);
-  z-index: 1000;
-}
+    background: #000;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    overflow: hidden;
+    max-height: 0;
+    padding: 0;
+    opacity: 0;
+    transition: max-height 0.5s ease, padding 0.5s ease, opacity 0.5s ease;
+    width: 100%;
+    position: relative;
+    top: auto;
+    z-index: 999;
+    margin: 0 auto;
+  }
+
+  .sidebar.show {
+    max-height: 500px;
+    padding: 20px 0;
+    opacity: 1;
+  }
 
 
-.sidebar h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 18px;
-  color: #e0e0e0;
-}
+  .sidebar h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #e0e0e0;
+  }
 
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  flex: 1;
-}
 
-.sidebar ul li {
-  padding: 12px 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  transition: background 0.2s;
-  font-size: 15px;
-}
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .sidebar ul li {
+    font-size: 16px;
+    cursor: pointer;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  
+  .sidebar ul li:hover {
+    color: red;
+  }
 
 .sidebar ul li i {
   margin-right: 8px;
@@ -134,9 +177,10 @@
   background: #1a1a1a; /* Gris muy oscuro */
 }
 body {
-  margin-left: 220px; /* espacio para el sidebar */
-  background: #f4f4f9;
   font-family: 'Montserrat', sans-serif;
+  background: #f4f4f9;
+  margin-left: 220px;
+  transition: margin 0.3s ease;
 }
 .sidebar ul li.active {
   background: #383854;
@@ -363,28 +407,94 @@ button {
     background-size: 16px;
   }
     
+  @media (min-width: 769px) {
+    body {
+      margin-left: 220px;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 220px;
+      height: 100%;
+      background: #000;
+      padding: 20px 0;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+      opacity: 1 !important;
+      max-height: none !important;
+      z-index: 1000;
+    }
+
+    .sidebar ul {
+      align-items: flex-start;
+      gap: 0;
+    }
+
+    .sidebar ul li {
+      width: 100%;
+      padding: 12px 20px;
+    }
+
+    .sidebar ul li:hover {
+      background: #1a1a1a;
+      color: white;
+    }
+
+    #menuToggle {
+      display: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    body {
+      margin-left: 0;
+    }
+
+    header {
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 20px;
+    }
+
+    #menuToggle {
+      display: block;
+    }
+
+    header span {
+      margin-right: 0;
+    }
+  }
+
   </style>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-  <div class="sidebar">
-    <h2>Admin Panel</h2>
-    <ul>
-      <li onclick="mostrarSeccion('reporte')"><i class="lucide lucide-bar-chart-2"></i> Reporte</li>
-      <li onclick="mostrarSeccion('vendedores')"><i class="lucide lucide-users"></i> Vendedores</li>
-      <li onclick="mostrarSeccion('clientes')"><i class="lucide lucide-user"></i> Clientes</li>
-      <li onclick="mostrarSeccion('asignar')"><i class="lucide lucide-hand-coins"></i> Asignar Cupones</li>
-      <li onclick="mostrarSeccion('grupos')"><i class="lucide lucide-layers"></i> Grupos</li>
-      <li onclick="mostrarSeccion('cupones')"><i class="lucide lucide-ticket"></i> Cupones</li>
-    </ul>
-  </div>
   <header class="header">
     <div class="container-m head">
         <a  href="index.html"><img src="img/logo.PNG"></a>
     </div>
     <h1>Panel del Administrador</h1>
     <span id="usuarioNombre"></span>
+    <button id="menuToggle" aria-label="Abrir menú">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="red">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
   </header>
+
+  <div class="sidebar">
+    <h2>Admin Panel</h2>
+    <ul>
+      <li onclick="mostrarSeccion('reporte')">Reporte</li>
+      <li onclick="mostrarSeccion('vendedores')">Vendedores</li>
+      <li onclick="mostrarSeccion('clientes')">Clientes</li>
+      <li onclick="mostrarSeccion('asignar')">Asignar Cupones</li>
+      <li onclick="mostrarSeccion('grupos')">Grupos</li>
+      <li onclick="mostrarSeccion('cupones')">Cupones</li>
+    </ul>
+  </div>
 
   <section>
     <h2>Reporte de Cupones Vendidos</h2>

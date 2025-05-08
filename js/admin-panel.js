@@ -727,4 +727,25 @@ document.addEventListener("DOMContentLoaded", () => {
   cargarReporte();
   cargarGruposParaCodigos();
   cargarComercios();
+
+    // Menú hamburguesa
+    const menuToggle = document.getElementById("menuToggle");
+    const sidebar = document.querySelector(".sidebar");
+  
+    if (menuToggle && sidebar) {
+      menuToggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        sidebar.classList.toggle("show");
+      });
+  
+      document.addEventListener("click", (e) => {
+        if (sidebar.classList.contains("show") && !sidebar.contains(e.target) && e.target !== menuToggle) {
+          sidebar.classList.remove("show");
+        }
+      });
+  
+      sidebar.querySelectorAll("li").forEach(li => {
+        li.addEventListener("click", () => sidebar.classList.remove("show"));
+      });
+    }
 });
