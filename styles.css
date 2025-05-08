@@ -589,13 +589,16 @@ a{
   }
 
   .mision_vision img{
+    height: 10rem;
+    width: 10rem;
+    object-fit: contain;
+  }
+  .mision_vision .cohete{
     background-color: #fff;
     border-radius: 3rem;
-    padding: 3rem 20rem;
-    width: auto;
-    height: 10rem;
+    padding: 2rem 7rem;
   }
-  @media (max-width: 768px){
+  /* @media (max-width: 768px){
     .mision_vision img{
       background-color: #fff;
       border-radius: 3rem;
@@ -603,11 +606,11 @@ a{
       width: auto;
       height: 10rem;
     }
-  }
+  } */
   .mision{
     background-color: #fff;
     border-radius: 3rem;
-    padding: 3rem;
+    padding: 2rem;
     margin: 3rem;
   }
   .mision_vision .our_val{
