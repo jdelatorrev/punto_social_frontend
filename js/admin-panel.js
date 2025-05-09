@@ -715,6 +715,41 @@ async function verClientesDelVendedor() {
   }
 }
 
+async function crearVendedor() {
+  const nombre = document.getElementById("vendedor_nombre").value.trim();
+  const email = document.getElementById("vendedor_email").value.trim();
+  const telefono = document.getElementById("vendedor_telefono").value.trim();
+
+  if (!nombre || !email || !telefono) {
+    return Swal.fire("Campos incompletos", "Todos los campos son obligatorios.", "warning");
+  }
+
+  try {
+    const res = await fetch(`${API}/api/admin/vendedores`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      },
+      body: JSON.stringify({ nombre, email, telefono })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      Swal.fire("Vendedor creado", "El vendedor ha sido registrado correctamente.", "success");
+      document.getElementById("formCrearVendedor").reset();
+      cargarVendedores();
+    } else {
+      Swal.fire("Error", data.error || "No se pudo crear el vendedor.", "error");
+    }
+  } catch (err) {
+    console.error(err);
+    Swal.fire("Error", "Error de conexión al crear vendedor", "error");
+  }
+}
+
+
 document.addEventListener("DOMContentLoaded", () => {
   mostrarSeccion('reporte');  
   lucide.createIcons();

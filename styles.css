@@ -735,6 +735,9 @@ a{
 }
 .sidebar{
   padding: 5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .sidebar .logo{
   width: 40%;
