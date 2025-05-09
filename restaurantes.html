@@ -123,13 +123,28 @@
 
         function scrollGaleria(btn, direccion) {
           const galeria = btn.parentElement.querySelector('.galeria-restaurante');
-          const scrollAmount = galeria.clientWidth * 0.8;
+          const imagenes = galeria.querySelectorAll('img');
+          const scrollWidth = galeria.scrollWidth;
+          const visibleWidth = galeria.clientWidth;
+          const scrollLeft = galeria.scrollLeft;
+          const scrollAmount = imagenes[0].clientWidth + 10; // imagen + gap
 
-          galeria.scrollBy({
-            left: direccion * scrollAmount,
-            behavior: 'smooth'
-          });
+          // Detectar si llegó al final
+          if (direccion > 0 && scrollLeft + visibleWidth >= scrollWidth - 5) {
+            galeria.scrollTo({ left: 0, behavior: 'smooth' });
+          } 
+          // Detectar si está al inicio y quiere retroceder
+          else if (direccion < 0 && scrollLeft <= 5) {
+            galeria.scrollTo({ left: scrollWidth, behavior: 'smooth' });
+          } 
+          // Movimiento normal
+          else {
+            galeria.scrollBy({ left: direccion * scrollAmount, behavior: 'smooth' });
+          }
         }
+
+
+        
       </script>
 </body>
 </html>
