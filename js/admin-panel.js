@@ -328,31 +328,35 @@ async function eliminarCupon(id) {
   }
 }
 
-async function crearCuponNuevo() {
-  const titulo = document.getElementById("nuevoCuponTitulo").value.trim();
-  const descripcion = document.getElementById("nuevoCuponDescripcion").value.trim();
-  const descuento = document.getElementById("nuevoCuponDescuento").value.trim();
-  const comercio_id = document.getElementById("nuevoCuponComercio").value;
-  const grupo_id = document.getElementById("nuevoCuponGrupo").value;
+async function crearCupon(event) {
+  event.preventDefault();
 
-  if (!titulo || !descripcion || !descuento || !comercio_id || !grupo_id) {
+  const titulo = document.getElementById("titulo").value.trim();
+  const descripcion = document.getElementById("descripcion").value.trim();
+  const descuento = document.getElementById("descuento").value.trim();
+  const fecha_expiracion = document.getElementById("fecha_expiracion").value;
+  const comercio_id = document.getElementById("comercioSelect").value;
+  const grupo_id = document.getElementById("grupoSelect").value;
+
+  if (!titulo || !descripcion || !descuento || !fecha_expiracion || !comercio_id || !grupo_id) {
     return Swal.fire("Campos obligatorios", "Todos los campos son requeridos.", "warning");
   }
 
   try {
     const res = await fetch(`${API}/api/admin/cupones`, {
       method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
-      body: JSON.stringify({ titulo, descripcion, descuento, comercio_id, grupo_id })
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      },
+      body: JSON.stringify({ titulo, descripcion, descuento, fecha_expiracion, comercio_id, grupo_id })
     });
 
     const data = await res.json();
 
     if (res.ok) {
       Swal.fire("Creado", "Cupón creado correctamente.", "success");
-      document.getElementById("nuevoCuponTitulo").value = "";
-      document.getElementById("nuevoCuponDescripcion").value = "";
-      document.getElementById("nuevoCuponDescuento").value = "";
+      document.getElementById("formCrearCupon").reset();
       cargarCuponesAdmin();
     } else {
       Swal.fire("Error", data.error || "No se pudo crear el cupón.", "error");
@@ -715,14 +719,19 @@ async function verClientesDelVendedor() {
   }
 }
 
-async function crearVendedor() {
+async function crearVendedor(event) {
+  event.preventDefault();
+
   const nombre = document.getElementById("vendedor_nombre").value.trim();
   const email = document.getElementById("vendedor_email").value.trim();
   const telefono = document.getElementById("vendedor_telefono").value.trim();
-
+  const boton = document.querySelector("#formCrearVendedor button[type='submit']");
+  
   if (!nombre || !email || !telefono) {
     return Swal.fire("Campos incompletos", "Todos los campos son obligatorios.", "warning");
   }
+
+  boton.disabled = true;
 
   try {
     const res = await fetch(`${API}/api/admin/vendedores`, {
@@ -746,8 +755,11 @@ async function crearVendedor() {
   } catch (err) {
     console.error(err);
     Swal.fire("Error", "Error de conexión al crear vendedor", "error");
+  } finally {
+    boton.disabled = false;
   }
 }
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
