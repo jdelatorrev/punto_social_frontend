@@ -391,6 +391,9 @@ a{
   .customers-benefits .highlight{
     padding: 0;
   }
+  .customers-benefits h1{
+    font-size: 3rem;
+  }
 }
   /* Section 6*/
   .contact{
