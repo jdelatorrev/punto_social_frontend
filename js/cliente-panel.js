@@ -79,7 +79,7 @@ function aplicarFiltros() {
   }
 
   if (filtrados.length === 0) {
-    contenedor.innerHTML = "<p>No tienes cupones que coincidan con los filtros.</p>";
+    contenedor.innerHTML = "<p class=not>No tienes cupones que coincidan con los filtros.</p>";
     return;
   }
 

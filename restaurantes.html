@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Punto Social</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+      @media (max-width: 769px) {
+        .container-m{
+          margin: 0 2rem;
+        }
+      }
+    </style>
 </head>
 
 <body>
@@ -28,7 +35,7 @@
     <main>
         <section class="bg-black">
             <div class="container-m restaurantes">
-                <h1>Restaurantes</h1>
+                <h1>RESTAURANTES</h1>
                 <div class="restaurantes-list">
                     <div class="restaurante">
                         <div class="galeria-contenedor">
@@ -115,13 +122,13 @@
         });
 
         function scrollGaleria(btn, direccion) {
-            const galeria = btn.parentElement;
-            const scrollAmount = galeria.clientWidth * 0.8; // ajusta la cantidad de scroll
+          const galeria = btn.parentElement.querySelector('.galeria-restaurante');
+          const scrollAmount = galeria.clientWidth * 0.8;
 
-            galeria.scrollBy({
+          galeria.scrollBy({
             left: direccion * scrollAmount,
             behavior: 'smooth'
-            });
+          });
         }
       </script>
 </body>
