@@ -645,6 +645,7 @@ async function cargarVendedores() {
         <td>${v.activo ? "Activo ✅" : "Inactivo ❌"}</td>
         <td>
           <button onclick="cambiarEstadoVendedor(${v.id}, ${v.activo ? 0 : 1})">${v.activo ? "Desactivar" : "Activar"}</button>
+          <button onclick="eliminarVendedor(${v.id})" style="margin-left: 5px;">🗑 Eliminar</button>
         </td>
       `;
       tbody.appendChild(tr);
@@ -679,6 +680,38 @@ async function cambiarEstadoVendedor(id, nuevoEstado) {
   }
 }
 
+async function eliminarVendedor(id) {
+  const confirmacion = await Swal.fire({
+    title: "¿Eliminar vendedor?",
+    text: "Sus clientes serán marcados como 'vendedor eliminado'. ¿Deseas continuar?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar"
+  });
+
+  if (!confirmacion.isConfirmed) return;
+
+  try {
+    const res = await fetch(`${API}/api/admin/vendedores/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: "Bearer " + token }
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      Swal.fire("Eliminado", "Vendedor eliminado correctamente.", "success");
+      cargarVendedores();
+    } else {
+      Swal.fire("Error", data.error || "No se pudo eliminar el vendedor.", "error");
+    }
+  } catch (err) {
+    console.error(err);
+    Swal.fire("Error", "Error de conexión", "error");
+  }
+}
+
+
 function cargarVendedoresParaClientes() {
   const vendedorSelector = document.getElementById("vendedorSelector");
   vendedorSelector.innerHTML = `<option value="">-- Elegir --</option>`;
@@ -710,6 +743,7 @@ async function verClientesDelVendedor() {
         <td>${cliente.nombre}</td>
         <td>${cliente.email}</td>
         <td>${cliente.telefono}</td>
+        <td>${cliente.vendedor_id ? cliente.vendedor_nombre : "Vendedor eliminado"}</td>
       `;
       tbody.appendChild(tr);
     });
