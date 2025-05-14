@@ -762,8 +762,13 @@ a{
     padding: 0 0 5rem 0;
   }
   .sidebar .logo {
-    width: 50%;
+    width: 65%;
     margin-bottom: 5rem;
+    
+  }
+  .sidebar .buy{
+    height: 7rem;
+    width: 20rem;
   }
 }
 
@@ -771,6 +776,7 @@ a{
 .categories, .categories p{
   color: #fff;
   padding: 5rem 0;
+  font-size: 1.6rem;
 }
 @media (min-width: 768px){
   .categories-list{
@@ -873,6 +879,7 @@ a{
   }
   .categories h1{
     text-align: center;
+    font-size: 3rem;
   }
 }
 

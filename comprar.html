@@ -20,6 +20,28 @@
       text-decoration: none; width: 15rem;
     }
     .boton-comprar:hover { background: #218838; }
+    .header-cupon{
+      font-weight: 300;
+      font-size: 2rem;
+      }
+
+    @media (max-width: 768px) {
+      .container-m{
+        margin: 0 2rem;
+      }
+    }
+    .cuponind p{
+      font-size: 1.6rem;
+    }
+    .cuponind ul{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .cuponind li{
+      list-style-type: disc;
+      margin-left: 4rem;
+    }
   </style>
 </head>
 <body>
@@ -41,7 +63,7 @@
       });
   </script>
   <section class="container-m">
-    <h1>Compra de Cupones</h1>
+    <h1 style="margin: 3rem 0;text-align: center;">Compra de Cupones</h1>
     <div id="contenedor-grupos"></div>
     <div id="paypal-button-container-${grupo.id}"></div>
   </section>
@@ -83,22 +105,23 @@
           ];
 
           div.innerHTML = `
-            <h2>
-              <img src="img/logo.PNG" alt="Logo" style="height: 24px; vertical-align: middle; margin-right: 8px;">
+          <div class=cuponind>
+            <h2 class=header-cupon>
+              <img src="img/logo-cupones.PNG" alt="Logo" style="height: 19px; vertical-align: middle;"> -
               ${grupo.nombre}
             </h2>
-            <p><strong>Incluye:</strong> 10 cupones con 6 usos cada uno</p>
-            <p><em>Total: 60 Beneficios Exclusivos</em></p>
+            <p><strong>Incluye:</strong> 10 restaurantes, con 6 cupones c/u</p>
+            <p><strong>Total:</strong> 60 Beneficios Exclusivos</p>
             <p><strong>Precio:</strong> $${Number(grupo.precio).toFixed(2)}</p>
             <p><strong>Vigencia:</strong> ${grupo.fecha_fin 
               ? `Válido hasta el ${formatearFecha(grupo.fecha_fin)}`
               : "Sin definir"}
             </p>
-            <p><strong>Aplica en los siguientes comercios:</strong></p>
             <ul>${comerciosUnicos.length 
               ? comerciosUnicos.map(com => `<li>${com}</li>`).join('') 
               : "<li>No hay comercios asignados aún.</li>"}</ul>
             <button class="boton-comprar" onclick="comprarGrupo(${grupo.id})">Comprar</button>
+          </div>
           `;
 
           contenedorGrupos.appendChild(div);
