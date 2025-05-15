@@ -16,7 +16,7 @@ ul {
 li{
     text-decoration: none;
     list-style-type: none;
-    font-size: 2rem;
+    font-size: 1.8rem;
 }
 h1 {
     font-size: 4rem;
@@ -777,6 +777,7 @@ a{
   color: #fff;
   padding: 5rem 0;
   font-size: 1.6rem;
+  text-align: center;
 }
 @media (min-width: 768px){
   .categories-list{
@@ -1068,6 +1069,7 @@ header span{
     padding-top: 5rem;
     text-align: left;
     font-size: 4rem;
+    text-align: center;
   }
 
 }
