@@ -3,7 +3,7 @@
 // 📌 Detectar entorno (local o producción)
 const API = ["localhost", "127.0.0.1"].includes(window.location.hostname)
   ? "http://localhost:3000"
-  : "backend_punto_social.railway.internal";
+  : "https://backendpuntosocial-production.up.railway.app";
 
 // 📌 Obtener token de LocalStorage
 function getToken() {
